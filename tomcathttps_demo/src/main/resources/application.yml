@@ -8,7 +8,6 @@ server:
   port: 8443
   compression:
     enabled: true
-    mime-types: "*/*"
 debug: true
 web:
   port: 80
