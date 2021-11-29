@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: "webapplcation"
+  codec:
+    log-request-details: true
+  task:
+    scheduling:
+      pool:
+        size: 8
+  thymeleaf:
+    cache: false
+
+debug: true
+

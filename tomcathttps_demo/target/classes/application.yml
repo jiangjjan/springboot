@@ -1,0 +1,14 @@
+server:
+  ssl:
+    #配置证书的别名 类型,密钥
+    key-store: 'classpath:ssl/test.keystore'
+    key-alias: tomcat
+    key-store-type: JKS
+    key-store-password: changeit
+  port: 8443
+  compression:
+    enabled: true
+    mime-types: "*/*"
+debug: true
+web:
+  port: 80

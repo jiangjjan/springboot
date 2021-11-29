@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>sse</title>
+</head>
+<script>
+    let sse = document.getElementById("sse");
+
+    if (!window.EventSource) {
+        let eventSource = new EventSource("get");
+        let content;
+        eventSource.addEventListener("message", function (e) { //收到message时
+            content += e.data + "<br/>";
+            sse.innerHTML = content;
+        })
+        eventSource.addEventListener("open", function (e) {
+           alert("open connect "+e.readyState );
+        },false)
+
+        eventSource.addEventListener("error", function (e) {
+           if(e.readyState == EventSource.CLOSED){
+               alert("error");
+           }else
+           {
+              alert(e.readyState)
+           }
+        },false)
+    }else{
+        alert("not support sse")
+    }
+</script>
+<body>
+<div id="sse"></div>
+</body>
+</html>
