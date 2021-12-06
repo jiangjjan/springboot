@@ -1,14 +1,15 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: "webapplcation"
   codec:
-    log-request-details: true
+    log-request-details: true #开启request请求参数打印
   task:
     scheduling:
       pool:
-        size: 8
+        size: 8  #更改定时任务线程池的线程大小
   thymeleaf:
     cache: false
-
-debug: true
-
+server:
+  port: 8081

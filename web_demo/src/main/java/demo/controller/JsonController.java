@@ -5,6 +5,7 @@ import demo.entity.ValueEntity;
 import demo.service.ContextHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,12 +39,15 @@ public class JsonController {
     @Autowired
     ApplicationEventPublisher publishEvent;
 
+
     @GetMapping("get")
     public Object event(ModelAndView mod) {
             log.info(String.valueOf(mod.getModel()));
         publishEvent.publishEvent(new Event("aa"));
         return holder.get().getBean(ValueEntity.class);
     }
+
+
 
 
 }
