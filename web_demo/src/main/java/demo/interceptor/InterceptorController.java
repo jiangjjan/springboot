@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class InterceptorController {
 
     @GetMapping("interceptor")
-    public void a(){
-        log.info("开始调用controller 内部");
+    public void controller(){
+        log.info("开始调用controller");
     }
+
 }

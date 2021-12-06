@@ -2,6 +2,18 @@
 类似于事件通知,发布者发出一个消息,多个订阅者对消息进行处理,依赖spring容器;  
 发布者使用 ApplicationContextEvent 接口发布消息; 使用@EventListener注解实现订阅,两个传输数据类型一致;  
 
+使用:  
+定义相互通信的数据结构
+```java
+import lombok.Data;
+import lombok.NonNull;
+
+@Data
+public class SendMessage {
+    @NonNull
+    private String message;
+}
+```
 发布者: 此处是用Aware接口注入已有的ApplicationEventPublisher   
 eg:
 ```java
@@ -20,7 +32,7 @@ public class Publisher implements ApplicationEventPublisherAware {
 
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
-        this.publishEvent=applicationEventPublisher;
+        publishEvent=applicationEventPublisher;
     }
 
     public static void publish(Object event){
@@ -53,8 +65,9 @@ public class Listener {
 ```  
 publishEvent.publishEvent(event);  
 此处默认为阻塞调用需要等到方法调用结束,可以在listener处添加@Async更改为异步调用方式
+否则,在存在多个订阅者时,会阻塞调用侧方法;
 
-##同步方式影响:  
-同步
-##异步方式影响:  
-一旦开始异步执行，方法的异常将不会抛出，只能在方法内部处理;
+####同步方式影响:  
+同步方式相当内部嵌套方法调用,出现异常时会向上抛出,如果调用侧的方法存在事务,会涉及会回滚操作;  
+####异步方式影响:  
+一旦开始异步执行，订阅者内出现异常不会影响调用侧;
