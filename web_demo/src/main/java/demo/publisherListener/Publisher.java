@@ -5,7 +5,6 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
 
-
 @Component
 @Slf4j
 public class Publisher implements ApplicationEventPublisherAware {
@@ -17,8 +16,7 @@ public class Publisher implements ApplicationEventPublisherAware {
         publishEvent=applicationEventPublisher;
     }
 
-    public static void publish(Object event){
-        log.info("publish event :{}",event);
-        publishEvent.publishEvent(event);
+    public static ApplicationEventPublisher getPublishEvent(){
+        return publishEvent;
     }
 }

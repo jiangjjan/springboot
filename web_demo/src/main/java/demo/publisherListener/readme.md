@@ -1,6 +1,6 @@
 #内置简易的发布订阅事件  
 类似于事件通知,发布者发出一个消息,多个订阅者对消息进行处理,依赖spring容器;  
-发布者使用 ApplicationContextEvent 接口发布消息; 使用@EventListener注解实现订阅,两个传输数据类型一致;  
+发布者使用 ApplicationContextEvent 接口发布消息; 使用@EventListener或者@Tran注解实现订阅,两个传输数据类型一致;  
 
 使用:  
 定义相互通信的数据结构
@@ -35,9 +35,8 @@ public class Publisher implements ApplicationEventPublisherAware {
         publishEvent=applicationEventPublisher;
     }
 
-    public static void publish(Object event){
-        log.info("publish event :{}",event);
-        publishEvent.publishEvent(event); 
+     public static ApplicationEventPublisher getPublishEvent(){
+           return publishEvent;
     }
 }
 
@@ -46,20 +45,25 @@ public class Publisher implements ApplicationEventPublisherAware {
 eg:  
 ```java
 
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-@Async
+@Service
 @Slf4j
-public class Listener {
-    @EventListener
-    public void sendMessage(SendMessage event){
-        log.info("sendMessage thread"+Thread.currentThread().getName());
-        System.out.println("listen message:"+event.getMessage());
-    }
+public class ListenerService {
+
+     @EventListener
+     @SneakyThrows
+     @Async
+     public void sendMessage(SendMessage event){
+         log.info("sendMessage thread {}",Thread.currentThread().getName());
+         Thread.sleep(3000);
+         log.info("listen message: {}",event.getMessage());
+     }
+
 }
 
 ```  
@@ -69,5 +73,11 @@ publishEvent.publishEvent(event);
 
 ####同步方式影响:  
 同步方式相当内部嵌套方法调用,出现异常时会向上抛出,如果调用侧的方法存在事务,会涉及会回滚操作;  
+
 ####异步方式影响:  
-一旦开始异步执行，订阅者内出现异常不会影响调用侧;
+一旦开始异步执行，订阅者内出现异常不会影响调用侧(详情参考线程原理);
+
+###@TransactionalEventListener  
+与上面的注解一样,不同之处在于 , 发布者所在的方法必须顺利调用结束,没有抛出任何异常异常(受检异常与运行时异常)  
+
+多个监听者的调用顺序可以使用@Order注解指定,此种方式只有在阻塞调用时有意义

@@ -1,2 +1,5 @@
-###
+### 异步调用
 GET http://localhost:{{port}}/event/sendMessage
+
+### 同步调用
+GET http://localhost:{{port}}/event/doSyncSendMessage?isError=true
