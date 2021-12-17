@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 public class ContextHolder implements ApplicationContextAware {
 
 
-     ApplicationContext context;
+    ApplicationContext context;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         context = applicationContext;
     }
 
-    public ApplicationContext get(){
+    public ApplicationContext get() {
         return context;
     }
 }
