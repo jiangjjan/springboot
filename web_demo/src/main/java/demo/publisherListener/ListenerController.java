@@ -25,13 +25,14 @@ public class ListenerController {
     TestMapper testMapper;
 
     @GetMapping("doSyncSendMessage")
-    public Object doSyncSendMessage(Boolean isError) throws Exception {
+    @Transactional
+    public Object doSyncSendMessage(Boolean isError) {
         log.info("exec doSyncSendMessage");
         testMapper.addOne(UUID.randomUUID().toString());
         SynchronousEvent e = new SynchronousEvent("this is  doSyncSendMessage message",isError);
         Publisher.getPublishEvent().publishEvent(e);
         if(isError){
-            throw new Exception("throw exception");
+            throw new RuntimeException("throw exception");
         }
         return 1;
     }

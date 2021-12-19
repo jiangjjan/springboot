@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
   application:
-    name: "webapplcation"
+    name: "application"
   codec:
     log-request-details: true #debug 开启request请求参数打印
   task:
@@ -16,7 +16,7 @@ spring:
     password: 123456
     username: root
   mvc:
-    log-request-details: true #打印请求参数
+    log-request-details: true #debug下打印请求参数
 server:
   port: 8081
 mybatis:

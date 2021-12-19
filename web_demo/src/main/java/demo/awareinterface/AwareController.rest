@@ -1,0 +1,2 @@
+### 获取beanName
+GET http://localhost:{{port}}/aware

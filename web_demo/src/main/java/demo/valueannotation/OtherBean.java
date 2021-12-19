@@ -8,4 +8,8 @@ import org.springframework.stereotype.Component;
 public class OtherBean {
 
     private String value = "defaultValue";
+    
+    public static  String generate(String a){
+        return "asdasda"+a;
+    }
 }
