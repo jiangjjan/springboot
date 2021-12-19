@@ -1,4 +1,4 @@
-package demo.valueannotation;
+package demo.valueAnnotation;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class UseValue {
     @Value("#{otherBean.value}")
     private String otherBeanProperty;
 
-    @Value("#{T(demo.valueannotation.OtherBean).generate('123&231')}")
+    @Value("#{T(demo.valueAnnotation.OtherBean).generate('123&231')}")
     private String random;
 
     @Value("${server.port}")

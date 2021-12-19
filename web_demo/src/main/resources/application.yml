@@ -9,14 +9,14 @@ spring:
     scheduling:
       pool:
         size: 8  #更改定时任务线程池的线程大小
-  thymeleaf:
-    cache: false
   datasource:
     url: jdbc:mysql://localhost:3306/test?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
     password: 123456
     username: root
   mvc:
     log-request-details: true #debug下打印请求参数
+    servlet:
+      load-on-startup: 1
 server:
   port: 8081
 mybatis:

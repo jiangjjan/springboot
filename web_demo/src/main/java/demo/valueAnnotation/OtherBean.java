@@ -1,4 +1,4 @@
-package demo.valueannotation;
+package demo.valueAnnotation;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;
