@@ -14,13 +14,12 @@ import java.util.concurrent.Executor;
 @Configuration
 @EnableAsync
 @Slf4j
-public class AsyncConf implements AsyncConfigurer {
+public class AsyncConf implements AsyncConfigurer{
 
     @Bean
     public Executor cpuPool() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("Cpu pool");
-        executor.setBeanName("ThreadPoolTaskExecutorCpu");
+        executor.setThreadNamePrefix("Async-Pool");
         executor.setCorePoolSize(10);
         executor.setMaxPoolSize(10);
         executor.setQueueCapacity(2000);
@@ -28,22 +27,12 @@ public class AsyncConf implements AsyncConfigurer {
         return executor;
     }
 
-    @Override
-    public Executor getAsyncExecutor() {
-        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
-        executor.setThreadNamePrefix("Async pool");
-        executor.setBeanName("Common Async bean");
-        executor.setCorePoolSize(10);
-        executor.setMaxPoolSize(10);
-        executor.setQueueCapacity(2000);
-        executor.initialize();
-        return executor;
-    }
 
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (ex, method, params) -> {
-            log.info("exec {} exception", method.getName());
+            String name = method.getDeclaringClass().getName();
+            log.info("exe {}.{} exception", name,method.getName());
             log.info("param {}", Arrays.toString(params));
             log.info("exception message {}", ex.getMessage());
 

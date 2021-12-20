@@ -21,5 +21,6 @@ public class AsyncService {
     public void cpuTask() {
         Thread.sleep(2000);
         log.info("exec cpu task");
+        throw new RuntimeException("async runtime exception");
     }
 }

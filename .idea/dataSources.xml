@@ -7,5 +7,11 @@
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mysql://localhost:3306/?useLegacyDatetimeCode=false&amp;serverTimezone=GMT%2B8&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="adiconDocker" uuid="75ab5ba8-5fbc-4bc2-af6a-8af7c9b4407a">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306?useLegacyDatetimeCode=false&amp;serverTimezone=Asia/Shanghai&amp;useUnicode=true&amp;characterEncoding=utf-8&amp;allowMultiQueries=true&amp;useSSL=false&amp;allowPublicKeyRetrieval=true</jdbc-url>
+    </data-source>
   </component>
 </project>
