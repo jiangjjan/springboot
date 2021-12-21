@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: adicon
+    active: '@spring.profiles.active@'
   application:
     name: "application"
   codec:
@@ -10,17 +10,28 @@ spring:
       pool:
         size: 8  #更改定时任务线程池的线程大小
   mvc:
+    converters:
+      preferred-json-mapper: xxx
     log-request-details: true #debug下打印请求参数
     servlet:
       load-on-startup: 1
+  jackson:
+    time-zone: GMT+8:00
+
+
 server:
+  http2:
+    enabled: true
   port: 8081
+  compression:
+    enabled: off
 #mybatis:
 #  mapper-locations: classpath:**/mapper/*.xml #xml文件位置
-debug: on
+debug: off
+
 ---
 spring:
-  profiles: adicon
+  profiles: test
   datasource:
     url: jdbc:mysql://localhost:3306/testDB?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
     password: admin

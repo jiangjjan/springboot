@@ -1,4 +1,4 @@
-package demo.publisherListener;
+package demo.publisherListener.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

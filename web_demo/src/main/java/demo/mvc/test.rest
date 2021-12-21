@@ -1,0 +1,12 @@
+###
+GET http://localhost:{{port}}/bind/web?name=namevalue&time=2021-12-12 12:21:19
+
+###
+GET http://localhost:{{port}}/bind/json
+Content-Type: application/json
+
+{
+  "name":"namevalue",
+  "time":"2021-12-12 12:21:19",
+  "localDate": "2021-02-12"
+}

@@ -5,9 +5,7 @@ server:
     key-alias: tomcat
     key-store-type: JKS
     key-store-password: changeit
-  port: 8443
+  port: 9443
   compression:
     enabled: true
-debug: true
-web:
-  port: 80
+debug: off

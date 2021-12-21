@@ -22,7 +22,7 @@ public class TomcatConf {
     @Value("${server.port}")
     int port;
 
-    @Value("${web.port}")
+    @Value("${web.port:80}")
     int webPort;
 
     public Connector httpConnector() {
