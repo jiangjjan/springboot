@@ -2,6 +2,7 @@ package demo.async;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -11,11 +12,15 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import java.util.Arrays;
 import java.util.concurrent.Executor;
 
-@Configuration
+@SpringBootConfiguration
 @EnableAsync
 @Slf4j
-public class AsyncConf implements AsyncConfigurer{
+public class AsyncConf implements AsyncConfigurer {
 
+    /**
+     * 注入异步线程使用的线程池
+     * @return 线程池
+     */
     @Bean
     public Executor cpuPool() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
@@ -28,14 +33,16 @@ public class AsyncConf implements AsyncConfigurer{
     }
 
 
+    /**
+     * 异步线程异常处理
+     * @return 异常handler
+     */
     @Override
     public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
         return (ex, method, params) -> {
-            String name = method.getDeclaringClass().getName();
-            log.info("exe {}.{} exception", name,method.getName());
-            log.info("param {}", Arrays.toString(params));
-            log.info("exception message {}", ex.getMessage());
-
+            log.error("exec {}.{} error,param {},exception message {}",
+                    method.getDeclaringClass().getName(), method.getName(),
+                    Arrays.toString(params), ex);
         };
     }
 }

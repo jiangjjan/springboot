@@ -15,7 +15,6 @@ public class DataBindEntity {
     private LocalDate localDate;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime time;
 
 }
