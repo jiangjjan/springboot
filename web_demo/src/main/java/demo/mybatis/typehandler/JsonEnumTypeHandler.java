@@ -46,7 +46,7 @@ public class JsonEnumTypeHandler<E extends Enum<E>> extends BaseTypeHandler<E> {
                 key2value.put(String.valueOf(jsonValue.get(e)), e);
                 value2key.put(e, String.valueOf(jsonValue.get(e)));
             }
-        } else {
+        } else { //如果没有,按照name进行设置
             for (E e : enumConstants) {
                 key2value.put(e.name(), e);
                 value2key.put(e, e.name());

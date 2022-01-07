@@ -12,7 +12,12 @@ public class UserController {
    final UserMapper userMapper;
 
    @GetMapping("queryUser")
-   public Object  queryUser(){
+   public Object  queryUser( ){
        return userMapper.selectAll();
    }
+
+    @GetMapping("queryUserByName")
+    public Object queryUserByName( ){
+        return userMapper.selectByName("hua",2L);
+    }
 }

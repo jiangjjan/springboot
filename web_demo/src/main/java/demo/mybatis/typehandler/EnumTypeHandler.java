@@ -3,6 +3,7 @@ package demo.mybatis.typehandler;
 import demo.mybatis.BaseEnum;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
+import org.apache.ibatis.type.MappedTypes;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
@@ -16,6 +17,7 @@ import java.util.HashMap;
  * @author jian.jiang
  * 处理枚举映射
  */
+@MappedTypes(BaseEnum.class)
 public class EnumTypeHandler<E extends Enum<E>&BaseEnum> extends BaseTypeHandler<E> {
 
     private final HashMap<String, E> eMap = new HashMap<>();

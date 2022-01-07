@@ -14,11 +14,11 @@ public enum SexEnum implements BaseEnum {
     ;
 
     @JsonValue
-    public final Integer code;
+    public final int code;
 
 
     @Override
     public String getValue() {
-        return code.toString();
+        return String.valueOf(code);
     }
 }
