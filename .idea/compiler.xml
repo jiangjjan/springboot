@@ -14,11 +14,13 @@
         <module name="tomcathttps" />
         <module name="batch" />
         <module name="tomcathhttps" />
+        <module name="redis_demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="filter" target="1.8" />
       <module name="filter_demo" target="1.8" />
+      <module name="redis_demo" target="1.8" />
       <module name="securoty" target="1.8" />
       <module name="tomcathhttps_demo" target="1.8" />
       <module name="web_demo" target="1.8" />
@@ -29,6 +31,7 @@
       <module name="batch" options="-parameters" />
       <module name="filter" options="-parameters" />
       <module name="filter_demo" options="-parameters" />
+      <module name="redis_demo" options="-parameters" />
       <module name="security" options="-parameters" />
       <module name="securoty" options="-parameters" />
       <module name="tomcathhttps" options="-parameters" />

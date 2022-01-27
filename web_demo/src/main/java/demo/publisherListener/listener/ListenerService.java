@@ -1,18 +1,21 @@
-package demo.publisherListener;
+package demo.publisherListener.listener;
 
+import demo.publisherListener.entity.SendImp;
 import demo.publisherListener.entity.SendMessage;
+import demo.publisherListener.entity.SendMessageFlag;
 import demo.publisherListener.entity.SynchronousEvent;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
 
 @Service
 @Slf4j
 public class ListenerService {
 
-    @EventListener
+    @TransactionalEventListener
     @SneakyThrows
     @Async
     public void sendMessage(SendMessage event) {
@@ -42,6 +45,18 @@ public class ListenerService {
         log.info("doSynchronousTransaction listener: {}", event.getMessage());
 
     }
+
+    @EventListener
+    public void doSendMessageInterface(SendMessageFlag fa) {
+        log.info("Entity impl interface");
+    }
+
+    @EventListener
+    public void sendImp(SendImp fa) {
+        log.info("Entity impl interface");
+    }
+
+
 
 
 }

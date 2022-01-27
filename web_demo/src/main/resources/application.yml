@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: '@spring.profiles.active@'
+    active: @spring.profiles.active@
   application:
     name: "application"
   codec:
@@ -10,13 +10,17 @@ spring:
       pool:
         size: 8  #更改定时任务线程池的线程大小
   mvc:
-    converters:
-      preferred-json-mapper: xxx
     log-request-details: true #debug下打印请求参数
     servlet:
       load-on-startup: 1
   jackson:
     time-zone: GMT+8:00
+  datasource:
+    hikari:
+      connection-timeout: 30000
+      idle-timeout: 60000
+      max-lifetime: 120000
+      maximum-pool-size: 20
 
 
 server:
@@ -24,7 +28,7 @@ server:
     enabled: true
   port: 8081
   compression:
-    enabled: off
+    enabled: true
 #mybatis:
 #  mapper-locations: classpath:**/mapper/*.xml #xml文件位置
 debug: off

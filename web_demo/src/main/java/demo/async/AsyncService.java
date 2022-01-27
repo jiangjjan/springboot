@@ -16,7 +16,7 @@ public class AsyncService {
         log.info("exec async task");
     }
 
-    @Async("cpuPool")
+    @Async
     @SneakyThrows
     public void cpuTask() {
         Thread.sleep(2000);
