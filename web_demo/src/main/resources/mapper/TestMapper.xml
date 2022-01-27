@@ -6,4 +6,7 @@
     <insert id="addOne">
         insert into t_test (name) values (#{name})
     </insert>
+    <select id="selectByName">
+        select * from t_test where name =#{name}
+    </select>
 </mapper>

@@ -18,7 +18,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * 包装Jackson 异常
+ * 包装Jackson 异常转为自己指定的异常
  */
 @SpringBootConfiguration
 @Slf4j

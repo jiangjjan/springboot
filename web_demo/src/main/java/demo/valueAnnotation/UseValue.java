@@ -28,7 +28,7 @@ public class UseValue {
     @Value("#{T(demo.valueAnnotation.OtherBean).generate('123&231')}")
     private String random;
 
-    @Value("${server.port}")
+    @Value("${server.port:8080}")
     private String fromConfig;
 
     @Value("classpath:file/file.txt")

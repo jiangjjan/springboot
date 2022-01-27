@@ -18,7 +18,7 @@ public class AopConfigure {
         LogConsumerTime a;
         if (null == param) { // 方法的注解为null 通过类获取
             Class<?> clazz = joinpoint.getTarget().getClass();
-            a = clazz.getAnnotation(LogConsumerTime.class);
+            a = clazz.getAnnotation(LogConsumerTime.class); //类与方法两者上面肯定有一个有注解
         } else {
             a = param;
         }
