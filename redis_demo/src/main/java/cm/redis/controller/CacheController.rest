@@ -1,0 +1,8 @@
+###
+GET http://localhost:8080/cache/query/test35
+
+###
+GET http://localhost:8080/cache/list
+
+###
+POST http://localhost:8080/cache/add

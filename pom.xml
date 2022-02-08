@@ -26,7 +26,7 @@
         <module>tomcathttps_demo</module>
         <module>security_demo</module>
         <module>batch_demo</module>
-        <module>redis-demo</module>
+        <module>redis_demo</module>
     </modules>
     <packaging>pom</packaging>
 

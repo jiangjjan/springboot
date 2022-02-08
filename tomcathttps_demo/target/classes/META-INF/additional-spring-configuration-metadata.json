@@ -1,9 +1,0 @@
-{
-  "properties": [
-    {
-      "name": "web.port",
-      "type": "java.lang.Integer",
-      "description": "explorer visit port."
-    }
-  ]
-}

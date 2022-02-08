@@ -1,5 +1,17 @@
-###
-GET http://localhost:8080/redis/dervalue
+### decrement 自减不需要先set一个值再进行计算,直接decrement就可以返回一个0
+GET http://localhost:8080/value/decrement
 
 ###
-GET http://localhost:8080/redis/gerlist
+GET http://localhost:8080/value/get-list
+
+###
+GET http://localhost:8080/value/get?key=sampleNo21121212
+
+### list  get
+GET http://localhost:8080/list/get
+
+###
+GET http://localhost:8080/list/getG
+
+###
+GET http://localhost:8080/value/set
