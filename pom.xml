@@ -27,6 +27,7 @@
         <module>security_demo</module>
         <module>batch_demo</module>
         <module>redis_demo</module>
+        <module>websocket_demo</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -13,6 +13,9 @@ spring:
     log-request-details: true #debug下打印请求参数
     servlet:
       load-on-startup: 1
+    hiddenmethod:
+      filter:
+        enabled: true
   jackson:
     time-zone: GMT+8:00
   datasource:
@@ -23,7 +26,18 @@ spring:
       maximum-pool-size: 20
 
 
+
 server:
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 10000
+      min-spare: 100
+
   http2:
     enabled: true
   port: 8081

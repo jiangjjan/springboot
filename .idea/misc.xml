@@ -14,6 +14,7 @@
       <set>
         <option value="$PROJECT_DIR$/filter_demo/pom.xml" />
         <option value="$PROJECT_DIR$/securoty/pom.xml" />
+        <option value="$PROJECT_DIR$/thymeleaf_demo/pom.xml" />
       </set>
     </option>
   </component>
