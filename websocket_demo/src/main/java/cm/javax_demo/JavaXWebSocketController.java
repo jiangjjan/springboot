@@ -17,7 +17,7 @@ public class JavaXWebSocketController {
             while (true) {
                 try {
                     Thread.sleep(  1000);
-                    WebServer.sendMessage1("{\"date\":\""+ DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now())+"\"}");
+                    WebServer.broadCastMessage("{\"date\":\""+ DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(LocalDateTime.now())+"\"}");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

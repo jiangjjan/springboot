@@ -1,5 +1,6 @@
 package cm.javax_demo;
 
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -19,32 +22,54 @@ import java.util.List;
 @Slf4j
 public class WebServer {
 
-    public static List<WebServer> serverSource = Collections.synchronizedList(new ArrayList<>());
+    public static Map<String, WebServer> serverSource = new ConcurrentHashMap<>();
 
-    public static void sendMessage1(final String message) {
-        serverSource.forEach(se -> se.sendMessage(message));
+    public static void broadCastMessage(String message) {
+        serverSource.forEach((k, v) -> {
+            if (v.getSession().isOpen()) {
+                try {
+                    v.getSession().getBasicRemote().sendText(message);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
+    public static void sendSpecialOne(String id, String message) throws IOException {
+        WebServer webServer = serverSource.get(id);
+        if (webServer == null) {
+            log.info("can't find session by id {}", id);
+        } else {
+            boolean open = webServer.session.isOpen();
+            if (open) {
+                webServer.session.getBasicRemote().sendText(message);
+            } else {
+                log.info("session has been closed, id is {}", id);
+            }
+        }
+    }
+
+    @Getter
     private Session session;
 
     /**
      * use @PathParam("key") String key add extra param
      * html url  ws:127.0.0.1/ws/param
      *
-     * @param session
      */
     @OnOpen
     public void open(Session session) {
         System.out.println(this);
-        serverSource.add(this);
+        serverSource.put(session.getId(), this);
         this.session = session;
         System.out.println(session.getId());
     }
 
     @OnClose
     public void onClose() {
-        log.info("close webSocket");
-        serverSource.remove(this);
+
+        serverSource.remove(session.getId());
         try {
             this.session.close();
         } catch (IOException e) {
@@ -60,16 +85,13 @@ public class WebServer {
     @OnError
     public void onError(Session session, Throwable error) {
         System.out.println("发生错误");
-        error.printStackTrace();
-    }
-
-    public void sendMessage(String message) {
+        serverSource.remove(session.getId());
         try {
-            this.session.getBasicRemote().sendText(message);
-            session.getId();
+            session.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        error.printStackTrace();
     }
 
 }
