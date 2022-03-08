@@ -7,41 +7,31 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="web" />
-        <module name="securoty" />
+        <module name="tomcathttps_demo" />
         <module name="websocket_demo" />
-        <module name="filter_demo" />
+        <module name="web" />
         <module name="security" />
-        <module name="thymeleaf_demo" />
-        <module name="tomcathttps" />
-        <module name="batch" />
-        <module name="tomcathhttps" />
+        <module name="batch_demo" />
         <module name="redis_demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="filter" target="1.8" />
-      <module name="filter_demo" target="1.8" />
-      <module name="securoty" target="1.8" />
-      <module name="thymeleaf_demo" target="1.8" />
-      <module name="tomcathhttps_demo" target="1.8" />
-      <module name="web_demo" target="1.8" />
+      <module name="batch_demo" target="1.8" />
+      <module name="redis_demo" target="1.8" />
+      <module name="security" target="1.8" />
+      <module name="springboot" target="1.8" />
+      <module name="tomcathttps_demo" target="1.8" />
+      <module name="web" target="1.8" />
+      <module name="websocket_demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="batch" options="-parameters" />
-      <module name="filter" options="-parameters" />
-      <module name="filter_demo" options="-parameters" />
+      <module name="batch_demo" options="-parameters" />
       <module name="redis_demo" options="-parameters" />
       <module name="security" options="-parameters" />
-      <module name="securoty" options="-parameters" />
-      <module name="thymeleaf_demo" options="-parameters" />
-      <module name="tomcathhttps" options="-parameters" />
-      <module name="tomcathhttps_demo" options="-parameters" />
-      <module name="tomcathttps" options="-parameters" />
+      <module name="tomcathttps_demo" options="-parameters" />
       <module name="web" options="-parameters" />
-      <module name="web_demo" options="-parameters" />
       <module name="websocket_demo" options="-parameters" />
     </option>
   </component>

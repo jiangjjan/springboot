@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/batch_demo/batch_demo.iml" filepath="$PROJECT_DIR$/batch_demo/batch_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web_demo/src/main/main.iml" filepath="$PROJECT_DIR$/web_demo/src/main/main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/redis_demo/redis_demo.iml" filepath="$PROJECT_DIR$/redis_demo/redis_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/security_demo/security.iml" filepath="$PROJECT_DIR$/security_demo/security.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot.iml" filepath="$PROJECT_DIR$/springboot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web_demo/src/test/test.iml" filepath="$PROJECT_DIR$/web_demo/src/test/test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tomcathttps_demo/tomcathttps_demo.iml" filepath="$PROJECT_DIR$/tomcathttps_demo/tomcathttps_demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/web_demo/web.iml" filepath="$PROJECT_DIR$/web_demo/web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/websocket_demo/websocket_demo.iml" filepath="$PROJECT_DIR$/websocket_demo/websocket_demo.iml" />
+    </modules>
+  </component>
+</project>
