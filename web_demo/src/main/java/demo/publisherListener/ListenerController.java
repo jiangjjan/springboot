@@ -40,12 +40,4 @@ public class ListenerController {
         return 1;
     }
 
-    @GetMapping("doSyncSendMessage")
-    public Object doSendMessage(Boolean isError) {
-        log.info("exec doSend Interface");
-        SendImp ss = new SendImp();
-        Publisher.getPublishEvent().publishEvent(ss);
-
-        return 1;
-    }
 }
