@@ -7,30 +7,30 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="tomcathttps_demo" />
+        <module name="batch" />
         <module name="websocket_demo" />
         <module name="web" />
         <module name="security" />
-        <module name="batch_demo" />
-        <module name="redis_demo" />
+        <module name="redis-demo" />
+        <module name="tomcathhttps" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="batch_demo" target="1.8" />
-      <module name="redis_demo" target="1.8" />
+      <module name="batch" target="1.8" />
+      <module name="redis-demo" target="1.8" />
       <module name="security" target="1.8" />
       <module name="springboot" target="1.8" />
-      <module name="tomcathttps_demo" target="1.8" />
+      <module name="tomcathhttps" target="1.8" />
       <module name="web" target="1.8" />
       <module name="websocket_demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="batch_demo" options="-parameters" />
-      <module name="redis_demo" options="-parameters" />
+      <module name="batch" options="-parameters" />
+      <module name="redis-demo" options="-parameters" />
       <module name="security" options="-parameters" />
-      <module name="tomcathttps_demo" options="-parameters" />
+      <module name="tomcathhttps" options="-parameters" />
       <module name="web" options="-parameters" />
       <module name="websocket_demo" options="-parameters" />
     </option>

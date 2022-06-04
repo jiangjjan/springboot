@@ -17,7 +17,7 @@ public class CacheController {
 
     final TestUseAnnotationService testService;
 
-    @GetMapping("query/test{id}")
+    @GetMapping("query/test/{id}")
     public Object queryTest(@PathVariable(required = false) Long id) {
         Test p = new Test();
         p.setId(id);

@@ -1,0 +1,8 @@
+###
+GET http://localhost:8081/enums
+Content-Type: application/json
+
+{"status":"2","name":"name"}
+
+###
+GET http://localhost:8081/form/enum?status=2
