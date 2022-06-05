@@ -1,6 +1,7 @@
 package demo.jackson;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -10,6 +11,7 @@ public enum StatusEnum implements ConverterBaseEnum{
     FAIL(4),
     ;
 
+    @JsonValue
     public final Integer code;
 
     @JsonCreator(mode = JsonCreator.Mode.DELEGATING)
