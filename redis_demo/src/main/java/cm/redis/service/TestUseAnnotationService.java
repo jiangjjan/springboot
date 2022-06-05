@@ -15,7 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@CacheConfig(cacheNames = "testGroup")
+@CacheConfig(cacheManager = "local",cacheNames = "testGroup")
 public class TestUseAnnotationService {
 
     final TestMapper testMapper;

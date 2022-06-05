@@ -11,4 +11,5 @@ public class Address {
     private String name;
 
     private Integer number;
+
 }
