@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("list")
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("unchecked")
 public class BoundListOpsController {
 
     final RedisTemplate<String, Object> redis;

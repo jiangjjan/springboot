@@ -17,6 +17,7 @@ import java.util.Objects;
 @RequestMapping("value")
 @RequiredArgsConstructor
 @Slf4j
+@SuppressWarnings("unchecked")
 public class BoundValueOpsController {
 
     final RedisTemplate<String, Object> redis;
