@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/active_mq/active_mq.iml" filepath="$PROJECT_DIR$/active_mq/active_mq.iml" />
       <module fileurl="file://$PROJECT_DIR$/batch_demo/batch.iml" filepath="$PROJECT_DIR$/batch_demo/batch.iml" />
       <module fileurl="file://$PROJECT_DIR$/redis_demo/redis-demo.iml" filepath="$PROJECT_DIR$/redis_demo/redis-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/security_demo/security.iml" filepath="$PROJECT_DIR$/security_demo/security.iml" />
