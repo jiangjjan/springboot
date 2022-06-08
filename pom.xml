@@ -29,6 +29,7 @@
         <module>redis_demo</module>
         <module>websocket_demo</module>
         <module>active_mq</module>
+        <module>rabbit_mq</module>
     </modules>
     <packaging>pom</packaging>
 

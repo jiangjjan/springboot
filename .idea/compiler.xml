@@ -12,6 +12,7 @@
         <module name="web" />
         <module name="security" />
         <module name="redis-demo" />
+        <module name="rabbit_mq" />
         <module name="active_mq" />
         <module name="tomcathhttps" />
       </profile>
@@ -19,6 +20,7 @@
     <bytecodeTargetLevel>
       <module name="active_mq" target="1.8" />
       <module name="batch" target="1.8" />
+      <module name="rabbit_mq" target="1.8" />
       <module name="redis-demo" target="1.8" />
       <module name="security" target="1.8" />
       <module name="springboot" target="1.8" />
@@ -31,6 +33,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="active_mq" options="-parameters" />
       <module name="batch" options="-parameters" />
+      <module name="rabbit_mq" options="-parameters" />
       <module name="redis-demo" options="-parameters" />
       <module name="security" options="-parameters" />
       <module name="tomcathhttps" options="-parameters" />
