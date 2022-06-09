@@ -3,19 +3,16 @@ package mq;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.annotation.JmsListener;
-import org.springframework.jms.annotation.JmsListeners;
 import org.springframework.jms.core.JmsTemplate;
-import org.springframework.jms.core.MessageCreator;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.annotation.Validated;
 
 import javax.jms.*;
-import java.beans.MethodDescriptor;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import javax.validation.constraints.NotEmpty;
 
 @Component
 @Slf4j
+@Validated
 public class ActiveService {
 
     @Autowired
@@ -27,7 +24,7 @@ public class ActiveService {
     @Autowired
     private Topic topic;
 
-    public void producerQueue(String content) {
+    public void producerQueue(@NotEmpty String content) {
         jmsTemplate.send(queue, session -> session.createTextMessage(content));
         jmsTemplate.send(topic, session -> session.createTextMessage(content));
     }
