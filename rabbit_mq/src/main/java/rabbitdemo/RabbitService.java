@@ -13,11 +13,11 @@ public class RabbitService {
     RabbitTemplate rabbitTemplate;
 
     public void produce( String message) {
-        rabbitTemplate.convertAndSend("aaaa");
+        rabbitTemplate.convertAndSend(message);
     }
 
     @RabbitListener
-    public void consumer(String message){
-        System.err.println(message);
+    public void consumerA(String message){
+        System.err.println("consumerA "+message);
     }
 }
