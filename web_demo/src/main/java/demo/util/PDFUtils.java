@@ -3,6 +3,9 @@ package demo.util;
 import org.apache.pdfbox.io.MemoryUsageSetting;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.junit.jupiter.api.Test;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.util.FastByteArrayOutputStream;
 
@@ -28,18 +31,16 @@ import java.util.Objects;
  */
 public class PDFUtils {
 
-    public static void main(String[] args) throws IOException {
-        FastByteArrayOutputStream fastByteArrayOutputStream = pdf2ImageDifferentHeight("https://adiconlimscloud01.oss-cn-hangzhou.aliyuncs.com/report/file/2021-12-24/0efb07ec-f80a-4f8b-9564-279d41faaa37.pdf");
-        Files.write(Paths.get("D:/sdasdadsa.jpg"), fastByteArrayOutputStream.toByteArray());
+
+    @Test
+    public void testPdf2ImageDifferentHeight() throws IOException {
+       String file = "https://adiconlimscloud01.oss-cn-hangzhou.aliyuncs.com/report/file/2021-12-24/0efb07ec-f80a-4f8b-9564-279d41faaa37.pdf";
+        Files.write(Paths.get("D:/sdasdadsa.jpg"), pdf2ImageDifferentHeight(new UrlResource(file)).toByteArray());
+
 
     }
 
-    /**
-     * @param url 资源地址
-     * @return
-     * @throws IOException
-     */
-    public static FastByteArrayOutputStream pdf2ImageSameHeight(String url) throws IOException {
+    public static FastByteArrayOutputStream pdf2ImageSameHeight(Resource resource) throws IOException {
         FastByteArrayOutputStream outFile = new FastByteArrayOutputStream();
         String imageType = "jpg";
 
@@ -48,7 +49,6 @@ public class PDFUtils {
         int[] data;
         BufferedImage image;
         BufferedImage newImage = null;
-        UrlResource resource = new UrlResource(url);
         try (InputStream pdfFile = resource.getInputStream();
              PDDocument pdDocument = PDDocument.load(pdfFile)) {
             PDFRenderer renderer = new PDFRenderer(pdDocument);
@@ -75,7 +75,7 @@ public class PDFUtils {
     }
 
 
-    public static FastByteArrayOutputStream pdf2ImageDifferentHeight(String url) throws IOException {
+    public static FastByteArrayOutputStream pdf2ImageDifferentHeight(Resource resource) throws IOException {
         FastByteArrayOutputStream outFile = new FastByteArrayOutputStream();
         String imageType = "jpg";
         List<int[]> images; //一份pdf会有多页,存储每页pdf转为图片后的RGB数据
@@ -86,9 +86,10 @@ public class PDFUtils {
         int dstHeight = 0; //所有的图片合在一起时总共的高度
         int[] data;   //图片内的数据
         BufferedImage image;
-        try (InputStream pdfFile = new URL(url).openStream();
+        try (InputStream pdfFile = resource.getInputStream();
              PDDocument pdDocument = PDDocument.load(pdfFile, MemoryUsageSetting.setupTempFileOnly())) {
             PDFRenderer renderer = new PDFRenderer(pdDocument);
+
             int pages = pdDocument.getNumberOfPages();
             images = new ArrayList<>(pages);
             allImageHeight = new int[pages];

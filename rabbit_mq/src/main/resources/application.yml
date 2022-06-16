@@ -1,0 +1,7 @@
+spring:
+  rabbitmq:
+    addresses: "amqp://guest:guest@localhost"
+    template:
+      retry:
+        enabled: true
+        initial-interval: "2s"
