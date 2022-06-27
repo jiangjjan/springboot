@@ -13,7 +13,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -34,9 +33,13 @@ public class PDFUtils {
 
     @Test
     public void testPdf2ImageDifferentHeight() throws IOException {
-       String file = "https://adiconlimscloud01.oss-cn-hangzhou.aliyuncs.com/report/file/2021-12-24/0efb07ec-f80a-4f8b-9564-279d41faaa37.pdf";
-        Files.write(Paths.get("D:/sdasdadsa.jpg"), pdf2ImageDifferentHeight(new UrlResource(file)).toByteArray());
+        String file = "https://adiconlimscloud01.oss-cn-hangzhou.aliyuncs.com/report/file/2021-12-24/0efb07ec-f80a-4f8b-9564-279d41faaa37.pdf";
+        String fileCN = "https://adiconlimscloud01.oss-cn-hangzhou.aliyuncs.com/test/report/test/file/2022-06-17/S03004221305-jy8329042380-西门误-2096.pdf";
+        String fileA = "https://adiconlimscloud01.oss-cn-hangzhou.aliyuncs.com/test/report/test/file/2022-06-17/S03004221641-jy8329042380-郑枘-5680.pdf";
 
+//        Files.write(Paths.get("D:/aba.jpg"), pdf2ImageByDisk(new UrlResource(fileA)).toByteArray());
+        String book = "C:\\Users\\24954\\OneDrive\\文档\\book\\《深入浅出Java Swing程序设计》.(范明翔,陈锦辉).pdf";
+        Files.write(Paths.get("D:/aa.jpg"), pdf2ImageByDisk(new FileSystemResource(book)).toByteArray());
 
     }
 
@@ -55,6 +58,8 @@ public class PDFUtils {
             int pages = pdDocument.getNumberOfPages();
             for (int i = 0; i < pages; i++) {
 
+                if (i == 20)
+                    break;
                 //PDF可能有多页 将PDF的每一页渲染成一张图片
                 image = renderer.renderImage(i, 2.7f);
                 width = image.getWidth();
@@ -87,7 +92,7 @@ public class PDFUtils {
         int[] data;   //图片内的数据
         BufferedImage image;
         try (InputStream pdfFile = resource.getInputStream();
-             PDDocument pdDocument = PDDocument.load(pdfFile, MemoryUsageSetting.setupTempFileOnly())) {
+             PDDocument pdDocument = PDDocument.load(pdfFile, MemoryUsageSetting.setupMainMemoryOnly())) {
             PDFRenderer renderer = new PDFRenderer(pdDocument);
 
             int pages = pdDocument.getNumberOfPages();
@@ -117,6 +122,56 @@ public class PDFUtils {
             images.clear();
 
         }
+        return outFile;
+    }
+
+    public static FastByteArrayOutputStream test(Resource resource) throws IOException {
+        FastByteArrayOutputStream outFile = new FastByteArrayOutputStream();
+        try (InputStream pdfFile = resource.getInputStream();
+             PDDocument pdDocument = PDDocument.load(pdfFile, MemoryUsageSetting.setupMainMemoryOnly())) {
+            PDFRenderer renderer = new PDFRenderer(pdDocument);
+
+            int pages = pdDocument.getNumberOfPages();
+            for(int i=0;i<pages;i++){
+                BufferedImage bufferedImage = renderer.renderImageWithDPI(i,100);
+                ImageIO.write(bufferedImage,"jpg",outFile);
+            }
+
+
+        }
+        return outFile;
+    }
+
+    public static FastByteArrayOutputStream pdf2ImageByDisk(Resource resource) throws IOException {
+        FastByteArrayOutputStream outFile = new FastByteArrayOutputStream();
+        String imageType = "jpg";
+
+        try (InputStream pdfFile = resource.getInputStream();
+             PDDocument pdDocument = PDDocument.load(pdfFile, MemoryUsageSetting.setupTempFileOnly())) {
+            PDFRenderer renderer = new PDFRenderer(pdDocument);
+            List<BufferedImage> bufferedImages =  new ArrayList<>();
+
+            int pages = pdDocument.getNumberOfPages();
+            int height = 0, width = 0;
+            BufferedImage image;
+            for (int i = 1; i <= pages; i++) {
+                //PDF可能有多页 将PDF的每一页渲染成一张图片
+                image = renderer.renderImage(i-1, 2.7f); //这个数值属于比较清晰,又带点模糊的边界,小于这个值开始出现重影
+                bufferedImages.add(image);
+                width = image.getWidth();
+                height+=image.getHeight();
+            }
+
+            image = new BufferedImage(width,height,1);
+            int tempHeight = 0;
+            for(BufferedImage temp:bufferedImages){
+                image.getGraphics().drawImage(temp,0,tempHeight,null);
+                tempHeight+=temp.getHeight();
+            }
+
+            ImageIO.write(image, imageType, outFile);// 写图片
+        }
+
         return outFile;
     }
 }

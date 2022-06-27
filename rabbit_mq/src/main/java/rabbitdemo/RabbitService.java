@@ -1,39 +1,33 @@
 package rabbitdemo;
 
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitMessagingTemplate;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static rabbitdemo.RabbitConfig.queueFan;
+
 @Service
+@RequiredArgsConstructor
 public class RabbitService {
 
-    @Autowired
-    RabbitTemplate rabbitTemplate;
+    final RabbitTemplate rabbitTemplate;
 
-    @Autowired
-    private  AmqpAdmin amqpAdmin;
+    final AmqpAdmin amqpAdmin;
 
-    @Autowired
-    private  AmqpTemplate amqpTemplate;
+    final AmqpTemplate amqpTemplate;
 
-    @Autowired
-    RabbitMessagingTemplate rabbitMessagingTemplate;
+    final RabbitMessagingTemplate rabbitMessagingTemplate;
 
-    @Autowired
-    ObjectMapper json;
-
-    public void produce(String message) throws JsonProcessingException {
+    public void produce(String message) {
         rabbitTemplate.convertAndSend(message);
     }
 
-    @RabbitListener
+    @RabbitListener(queues = queueFan)
     public void consumerA(String message){
         System.err.println("consumerA "+message);
     }

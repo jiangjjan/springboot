@@ -30,6 +30,7 @@
         <module>websocket_demo</module>
         <module>active_mq</module>
         <module>rabbit_mq</module>
+        <module>lucene</module>
     </modules>
     <packaging>pom</packaging>
 

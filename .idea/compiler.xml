@@ -15,11 +15,13 @@
         <module name="rabbit_mq" />
         <module name="active_mq" />
         <module name="tomcathhttps" />
+        <module name="lucene" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="active_mq" target="1.8" />
       <module name="batch" target="1.8" />
+      <module name="lucene" target="9" />
       <module name="rabbit_mq" target="1.8" />
       <module name="redis-demo" target="1.8" />
       <module name="security" target="1.8" />
@@ -33,6 +35,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="active_mq" options="-parameters" />
       <module name="batch" options="-parameters" />
+      <module name="lucene" options="-parameters" />
       <module name="rabbit_mq" options="-parameters" />
       <module name="redis-demo" options="-parameters" />
       <module name="security" options="-parameters" />

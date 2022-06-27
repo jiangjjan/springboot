@@ -1,0 +1,15 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 275661011
+      max-request-size: 275661011
+server:
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 10000
+      min-spare: 100
