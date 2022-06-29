@@ -1,4 +1,9 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 275661011
+      max-request-size: 275661011
+      location: D:/
   profiles:
     active: @spring.profiles.active@
   application:
@@ -40,7 +45,7 @@ server:
 
   http2:
     enabled: true
-  port: 8081
+  port: 8080
   compression:
     enabled: true
 #mybatis:
@@ -51,9 +56,9 @@ debug: off
 spring:
   profiles: test
   datasource:
-    url: jdbc:mysql://localhost:3306/testDB?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
-    password: admin
-    username: root
+    url: jdbc:mysql://localhost:3306?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+    password: root
+    username: 123456
 ---
 spring:
   profiles: dev

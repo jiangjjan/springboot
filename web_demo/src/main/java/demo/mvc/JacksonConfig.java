@@ -9,6 +9,7 @@ import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -29,7 +30,7 @@ public class JacksonConfig {
     public WebMvcConfigurer newDefineJsonHttpMessageConverter() {
         return new WebMvcConfigurer() {
             @Override
-            public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+            public void configureMessageConverters(@NonNull List<HttpMessageConverter<?>> converters) {
 
                 for (int i = 0; i < converters.size(); i++) {
                     HttpMessageConverter<?> httpMessageConverter = converters.get(i);

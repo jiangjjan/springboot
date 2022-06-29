@@ -2,16 +2,11 @@ package demo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.document.Field;
-import org.apache.lucene.document.StringField;
-import org.apache.lucene.document.TextField;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
