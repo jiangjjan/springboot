@@ -27,7 +27,7 @@
       <module name="security" target="1.8" />
       <module name="springboot" target="1.8" />
       <module name="tomcathhttps" target="1.8" />
-      <module name="web" target="1.8" />
+      <module name="web" target="9" />
       <module name="websocket_demo" target="1.8" />
     </bytecodeTargetLevel>
   </component>

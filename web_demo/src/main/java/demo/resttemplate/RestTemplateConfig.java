@@ -6,13 +6,20 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.Data;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -50,5 +57,28 @@ public class RestTemplateConfig {
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(json);
         converter.setSupportedMediaTypes(Arrays.asList(MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON));
         return converter;
+    }
+
+    @Test
+    public void main() throws IOException {
+        RestTemplate restTemplate = restTemplate();
+
+        MultiValueMap<String, Resource> params = new LinkedMultiValueMap<>();
+        String file = "https://adiconlimscloud01.oss-cn-hangzhou.aliyuncs.com/report/file/2021-12-24/0efb07ec-f80a-4f8b-9564-279d41faaa37.pdf";
+        UrlResource fileSystemResource = new UrlResource(file);
+        InputStreamResource ss = new InputStreamResource(fileSystemResource.getInputStream()) {
+            @Override
+            public String getFilename() {
+                return "fileName.pdf";
+            }
+
+            @Override
+            public long contentLength(){
+                return 0;
+            }
+        };
+        params.add("file", fileSystemResource);
+        String s = restTemplate.postForObject("http://localhost:8080/lucene/file", params, String.class);
+        System.out.println(s);
     }
 }

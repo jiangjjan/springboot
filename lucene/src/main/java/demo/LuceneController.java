@@ -18,6 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -31,14 +32,15 @@ public class LuceneController {
     public void addDataByFile(Part file) throws IOException {
         String submittedFileName = file.getSubmittedFileName();
         System.out.println(submittedFileName);
-        List<Product> result = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-            reader.lines().map(this::covert2Product).forEach(result::add);
-        }
-        System.out.println(result);
+        file.write("D:/"+ UUID.randomUUID().toString() +submittedFileName);
+//        List<Product> result = new ArrayList<>();
+//        try (BufferedReader reader = new BufferedReader(new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+//            reader.lines().map(this::covert2Product).forEach(result::add);
+//        }
+//        System.out.println(result);
 //        result.forEach(this::addProduct);
 //        luceneService.indexWriter.commit();
-        luceneService.addByClass(result,Product.class);
+//        luceneService.addByClass(result,Product.class);
         log.info("end addDataByFile");
 
     }

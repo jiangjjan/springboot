@@ -5,7 +5,7 @@ spring:
       max-request-size: 275661011
       location: D:/
   profiles:
-    active: @spring.profiles.active@
+    active: '@spring.profiles.active@'
   application:
     name: "application"
   codec:

@@ -18,3 +18,12 @@ Content-Type: application/json
   "code": "539129852651"
 }
 
+###
+POST http://localhost:8080/lucene/file
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="data.xml"
+
+< D:/settings.xml
+
