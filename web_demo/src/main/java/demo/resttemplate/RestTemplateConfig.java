@@ -3,6 +3,7 @@ package demo.resttemplate;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import lombok.Data;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
@@ -51,7 +52,7 @@ public class RestTemplateConfig {
     }
 
     MappingJackson2HttpMessageConverter converter() {
-        ObjectMapper json = new ObjectMapper();
+        JsonMapper json = new JsonMapper();
         json.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
         json.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
         MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(json);
