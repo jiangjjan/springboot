@@ -19,6 +19,7 @@ public class BoundListOpsController {
 
     final RedisTemplate<String, Object> redis;
 
+
     @GetMapping("get")
     public User<Address> get() {
         String key = "addressKey";

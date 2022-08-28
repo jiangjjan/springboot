@@ -1,4 +1,4 @@
-package cm.redis.service;
+package cm.redis.multi;
 
 import cm.redis.mapper.TestMapper;
 import cm.redis.model.Test;
@@ -11,21 +11,17 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@CacheConfig(cacheResolver = "multiCache",cacheNames = "multiCache")
 @RequiredArgsConstructor
-@CacheConfig(cacheManager = "caffeine", cacheNames = "testGroup")
 @Slf4j
-public class LocalCacheTestService {
+public class MultiCacheService {
 
     final TestMapper testMapper;
 
-    @Cacheable(key = "'allList'", unless = "#result.size()==0")
-    public List<Test> listTest() {
-        log.error("exec list");
+    @Cacheable(key = "'multiCacheList'")
+    public List<Test> list() {
+        log.info("list");
         return testMapper.listTest();
     }
 
-    @Cacheable(key = "'allList'+#key1+#key2")
-    public String testNull(String key1,String key2) {
-       return key1+key2;
-    }
 }

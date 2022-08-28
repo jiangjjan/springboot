@@ -16,17 +16,13 @@ spring:
         max-idle: 8
   cache:
     redis:
-      time-to-live: 600000
+      time-to-live: 3m
   jackson:
     time-zone: GMT+8
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
-logging:
-  level:
-    cm:
-      redis:
-        mapper: debug
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 server:
   port: 8080

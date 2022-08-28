@@ -11,6 +11,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
@@ -26,6 +27,7 @@ import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
+import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -68,10 +70,10 @@ public class RedisConfig extends CachingConfigurerSupport {
     
     @Bean
     @Primary
-    public CacheManager local(){
+    public CacheManager caffeine(){
 
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
-        caffeineCacheManager.setCaffeine(Caffeine.newBuilder().softValues().expireAfterWrite( Duration.ofSeconds(20))
+        caffeineCacheManager.setCaffeine(Caffeine.newBuilder().softValues().expireAfterWrite( Duration.ofMinutes(2))
                 .initialCapacity(1000).maximumSize(100000));
         return caffeineCacheManager;
     }
@@ -174,5 +176,13 @@ public class RedisConfig extends CachingConfigurerSupport {
     public CacheErrorHandler errorHandler() {
         return new IgnoreExceptionCacheErrorHandler();
     }
+
+    @Bean
+    public CacheResolver multiCache(@Qualifier("redis") CacheManager redis, @Qualifier("caffeine") CacheManager caffeine){
+
+        return new MultiCache(caffeine,redis);
+
+    }
+
 
 }

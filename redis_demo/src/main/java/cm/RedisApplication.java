@@ -24,27 +24,27 @@ import java.util.List;
 public class RedisApplication {
 
     public static void main(String[] args) {
-//        SpringApplication.run(RedisApplication.class, args);
+        SpringApplication.run(RedisApplication.class, args);
 //        System.out.println(LocalDateTime.now());
-        HikariDataSource dataSource = new HikariDataSource();
-        dataSource.setUsername("root");
-        dataSource.setPassword("123456");
-        dataSource.setJdbcUrl("jdbc:mysql://localhost:3307/test?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true");
+//        HikariDataSource dataSource = new HikariDataSource();
+//        dataSource.setUsername("root");
+//        dataSource.setPassword("123456");
+//        dataSource.setJdbcUrl("jdbc:mysql://localhost:3307/test?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true");
+//
+//        Configuration configuration = new Configuration();
+//        configuration.addMappers("cm.redis.mapper");
+//        Environment environment = new Environment("enviroment",new JdbcTransactionFactory(),dataSource);
+//        configuration.setEnvironment(environment);
+//
+//        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+//        SqlSessionFactory factory = builder.build(configuration);
+//
+//        SqlSession sqlSession = factory.openSession(true);
+//        TestMapper mapper = sqlSession.getMapper(TestMapper.class);
 
-        Configuration configuration = new Configuration();
-        configuration.addMappers("cm.redis.mapper");
-        Environment environment = new Environment("enviroment",new JdbcTransactionFactory(),dataSource);
-        configuration.setEnvironment(environment);
 
-        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
-        SqlSessionFactory factory = builder.build(configuration);
-
-        SqlSession sqlSession = factory.openSession(true);
-        TestMapper mapper = sqlSession.getMapper(TestMapper.class);
-
-
-        List<cm.redis.model.Test> users = mapper.listTest();
-        System.out.println(users);
+//        List<cm.redis.model.Test> users = mapper.listTest();
+//        System.out.println(users);
     }
 
 }
