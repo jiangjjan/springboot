@@ -1,6 +1,7 @@
 package cm.redis.controller;
 
 import cm.redis.model.Test;
+import cm.redis.service.LocalCacheTestService;
 import cm.redis.service.TestUseAnnotationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import java.util.UUID;
 public class CacheController {
 
     final TestUseAnnotationService testService;
+    final LocalCacheTestService localCacheTestService;
 
     @GetMapping("query/test/{id}")
     public Object queryTest(@PathVariable(required = false) Long id) {
@@ -28,7 +30,14 @@ public class CacheController {
 
     @GetMapping("list")
     public Object listTest() {
+
+        log.info("exec listTest");
         return testService.listTest();
+    }
+
+    @GetMapping("local")
+    public Object local() {
+        return localCacheTestService.testNull("aa",null);
     }
 
     @PostMapping("add")

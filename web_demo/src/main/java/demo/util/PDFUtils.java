@@ -39,8 +39,8 @@ public class PDFUtils {
 
 //        Files.write(Paths.get("D:/aba.jpg"), pdf2ImageByDisk(new UrlResource(fileA)).toByteArray());
         String book = "C:\\Users\\24954\\OneDrive\\文档\\book\\《深入浅出Java Swing程序设计》.(范明翔,陈锦辉).pdf";
-        Files.write(Paths.get("D:/aa.jpg"), pdf2ImageByDisk(new FileSystemResource(book)).toByteArray());
-
+//        Files.write(Paths.get("D:/aa.jpg"), pdf2ImageByDisk(new UrlResource(fileCN)).toByteArray());
+        System.out.println(fileCN.substring(fileCN.lastIndexOf("/")+1));
     }
 
     public static FastByteArrayOutputStream pdf2ImageSameHeight(Resource resource) throws IOException {
@@ -143,6 +143,7 @@ public class PDFUtils {
     }
 
     public static FastByteArrayOutputStream pdf2ImageByDisk(Resource resource) throws IOException {
+
         FastByteArrayOutputStream outFile = new FastByteArrayOutputStream();
         String imageType = "jpg";
 

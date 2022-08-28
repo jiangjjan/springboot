@@ -23,13 +23,13 @@ spring:
         enabled: true
   jackson:
     time-zone: GMT+8:00
+    date-format:
   datasource:
     hikari:
       connection-timeout: 30000
       idle-timeout: 60000
       max-lifetime: 120000
       maximum-pool-size: 20
-
 
 
 server:
@@ -51,7 +51,9 @@ server:
 #mybatis:
 #  mapper-locations: classpath:**/mapper/*.xml #xml文件位置
 debug: off
-
+mybatis:
+  configuration:
+    default-enum-type-handler:
 ---
 spring:
   profiles: test

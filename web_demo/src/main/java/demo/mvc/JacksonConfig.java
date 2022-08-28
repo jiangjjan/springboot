@@ -57,7 +57,7 @@ public class JacksonConfig {
             try {
                 return super.read(type, contextClass, inputMessage);
             } catch (Exception e) {
-                throw new JsonMessageConverterException(e, e.getMessage());
+                throw new JsonMessageConverterException(e);
             }
 
         }
@@ -67,7 +67,7 @@ public class JacksonConfig {
             try {
                 return super.readInternal(clazz, inputMessage);
             } catch (Exception e) {
-                throw new JsonMessageConverterException(e, e.getMessage());
+                throw new JsonMessageConverterException(e);
             }
         }
 
@@ -76,7 +76,7 @@ public class JacksonConfig {
             try {
                 super.writeInternal(object, type, outputMessage);
             } catch (Exception e) {
-                throw new JsonMessageConverterException(e, e.getMessage());
+                throw new JsonMessageConverterException(e);
             }
         }
 
@@ -85,8 +85,8 @@ public class JacksonConfig {
 
     public static class JsonMessageConverterException extends RuntimeException {
 
-        JsonMessageConverterException(Throwable cause, String message) {
-            super(message, cause);
+        JsonMessageConverterException(Throwable cause) {
+            super(cause);
         }
     }
 }

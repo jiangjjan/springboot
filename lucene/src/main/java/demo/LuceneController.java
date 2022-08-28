@@ -11,12 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import org.wltea.analyzer.lucene.IKAnalyzer;
 
 import javax.servlet.http.Part;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +25,8 @@ public class LuceneController {
     final LuceneService luceneService;
 
     @PostMapping("file")
-    public void addDataByFile(Part file) throws IOException {
+    public void addDataByFile(String token,Part file) throws IOException {
+        System.err.println("token:"+token);
         String submittedFileName = file.getSubmittedFileName();
         System.out.println(submittedFileName);
         file.write("D:/"+ UUID.randomUUID().toString() +submittedFileName);
@@ -50,7 +47,6 @@ public class LuceneController {
         Query query = new QueryParser(keyWord, new IKAnalyzer()).parse(value);
         List<Product> res = luceneService.searchByClass(query, 10,Product.class);
         return res;
-
     }
 
     public void testTermQuery() throws Exception {

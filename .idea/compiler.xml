@@ -12,23 +12,20 @@
         <module name="web" />
         <module name="security" />
         <module name="redis-demo" />
-        <module name="rabbit_mq" />
-        <module name="active_mq" />
         <module name="tomcathhttps" />
-        <module name="lucene" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="active_mq" target="1.8" />
-      <module name="batch" target="1.8" />
+      <module name="batch" target="9" />
       <module name="lucene" target="9" />
       <module name="rabbit_mq" target="1.8" />
-      <module name="redis-demo" target="1.8" />
-      <module name="security" target="1.8" />
-      <module name="springboot" target="1.8" />
-      <module name="tomcathhttps" target="1.8" />
+      <module name="redis-demo" target="9" />
+      <module name="security" target="9" />
+      <module name="springboot" target="9" />
+      <module name="tomcathhttps" target="9" />
       <module name="web" target="9" />
-      <module name="websocket_demo" target="1.8" />
+      <module name="websocket_demo" target="9" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
@@ -21,8 +22,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.cache.interceptor.CacheErrorHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -37,6 +40,7 @@ import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer
 import org.springframework.data.redis.serializer.RedisSerializationContext.SerializationPair;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.lang.Nullable;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
@@ -50,7 +54,7 @@ import java.util.stream.Collectors;
 @EnableCaching
 @EnableConfigurationProperties({CacheProperties.class})
 @RequiredArgsConstructor
-public class RedisConfig {
+public class RedisConfig extends CachingConfigurerSupport {
 
     final Jackson2ObjectMapperBuilder jackson2ObjectMapperBuilder;
     final JacksonProperties jacksonProperties;
@@ -67,13 +71,13 @@ public class RedisConfig {
     public CacheManager local(){
 
         CaffeineCacheManager caffeineCacheManager = new CaffeineCacheManager();
-        caffeineCacheManager.setCaffeine(Caffeine.newBuilder().softValues().expireAfterWrite( Duration.ofHours(6))
+        caffeineCacheManager.setCaffeine(Caffeine.newBuilder().softValues().expireAfterWrite( Duration.ofSeconds(20))
                 .initialCapacity(1000).maximumSize(100000));
         return caffeineCacheManager;
     }
 
     @Bean
-    RedisCacheManager redis(CacheProperties cacheProperties, CacheManagerCustomizers cacheManagerCustomizers,
+    CacheManager redis(CacheProperties cacheProperties, CacheManagerCustomizers cacheManagerCustomizers,
                                    ObjectProvider<org.springframework.data.redis.cache.RedisCacheConfiguration> redisCacheConfiguration,
                                    ObjectProvider<RedisCacheManagerBuilderCustomizer> redisCacheManagerBuilderCustomizers,
                                    RedisConnectionFactory redisConnectionFactory) {
@@ -165,5 +169,10 @@ public class RedisConfig {
         return new GenericJackson2JsonRedisSerializer(buildMapper());
     }
 
+    @Override
+    @Nullable
+    public CacheErrorHandler errorHandler() {
+        return new IgnoreExceptionCacheErrorHandler();
+    }
 
 }

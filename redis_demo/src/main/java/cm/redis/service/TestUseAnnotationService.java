@@ -4,6 +4,7 @@ package cm.redis.service;
 import cm.redis.mapper.TestMapper;
 import cm.redis.model.Test;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,8 +15,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
-@CacheConfig(cacheManager = "local",cacheNames = "testGroup")
+@CacheConfig( cacheManager = "local",cacheNames = "testGroup")
 public class TestUseAnnotationService {
 
     final TestMapper testMapper;
@@ -26,8 +28,20 @@ public class TestUseAnnotationService {
         return test.orElse(null);
     }
 
-    @Cacheable(key = "'allList'", unless = "#result.size()==0")
+
+    @Cacheable(key = "param", condition = "param!=null")
+    public Test list(String param) {
+        Test p = new Test();
+        p.setName(param);
+        Optional<Test> test = testMapper.selectOne(p);
+        return test.orElse(null);
+
+
+    }
+
+    @Cacheable(key = "'allList'", unless = "#result.size()==0",cacheResolver = "doubleCache")
     public List<Test> listTest() {
+        log.info("exec  cache listTest");
         return testMapper.listTest();
     }
 
