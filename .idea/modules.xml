@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/batch_demo/batch.iml" filepath="$PROJECT_DIR$/batch_demo/batch.iml" />
+      <module fileurl="file://$PROJECT_DIR$/multidb_demo/multidb_demo.iml" filepath="$PROJECT_DIR$/multidb_demo/multidb_demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/redis_demo/redis-demo.iml" filepath="$PROJECT_DIR$/redis_demo/redis-demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/security_demo/security.iml" filepath="$PROJECT_DIR$/security_demo/security.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot.iml" filepath="$PROJECT_DIR$/springboot.iml" />

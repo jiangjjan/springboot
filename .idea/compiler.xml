@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="batch" />
+        <module name="multidb_demo" />
         <module name="websocket_demo" />
         <module name="web" />
         <module name="security" />
@@ -19,6 +20,7 @@
       <module name="active_mq" target="1.8" />
       <module name="batch" target="9" />
       <module name="lucene" target="9" />
+      <module name="multidb_demo" target="9" />
       <module name="rabbit_mq" target="1.8" />
       <module name="redis-demo" target="9" />
       <module name="security" target="9" />
@@ -33,6 +35,7 @@
       <module name="active_mq" options="-parameters" />
       <module name="batch" options="-parameters" />
       <module name="lucene" options="-parameters" />
+      <module name="multidb_demo" options="-parameters" />
       <module name="rabbit_mq" options="-parameters" />
       <module name="redis-demo" options="-parameters" />
       <module name="security" options="-parameters" />

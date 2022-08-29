@@ -9,7 +9,7 @@ spring:
   application:
     name: "application"
   codec:
-    log-request-details: true #debug 开启request请求参数打印
+    log-request-details: true # 开启request请求参数打印
   task:
     scheduling:
       pool:
@@ -50,10 +50,9 @@ server:
     enabled: true
 #mybatis:
 #  mapper-locations: classpath:**/mapper/*.xml #xml文件位置
-debug: off
 mybatis:
   configuration:
-    default-enum-type-handler:
+    default-enum-type-handler: demo.mybatis.typehandler.EnumTypeHandler
 ---
 spring:
   profiles: test
@@ -65,7 +64,9 @@ spring:
 spring:
   profiles: dev
   datasource:
-    url: jdbc:mysql://192.168.1.3:3307?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: root
+    url: jdbc:mysql://localhost:3307/test?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
     password: 123456
+    username: root
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
