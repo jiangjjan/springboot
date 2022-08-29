@@ -15,6 +15,6 @@ public class MultiDbController {
 
     @GetMapping("mysql/list")
     public Object mysqlDBList(){
-        return mysqlDBService.list();
+        return mysqlDBService.listTest("");
     }
 }

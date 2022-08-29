@@ -10,12 +10,13 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@DataSource
 public class DBService {
 
-   final TestMapper testMapper;
+    final TestMapper testMapper;
 
-   public List<Test> list(){
-       return testMapper.selectAll();
-   }
+
+    @DataSource("slave")
+    public List<Test> listTest(String name) {
+        return testMapper.selectAll();
+    }
 }
