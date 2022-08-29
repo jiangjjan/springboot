@@ -10,17 +10,17 @@ public class RoutingDataSource extends AbstractRoutingDataSource {
 
     @Override
     protected Object determineCurrentLookupKey() {
-        // 从ThreadLocal中取出key:
-        return getDataSourceRoutingKey();
-    }
 
-    public static Object getDataSourceRoutingKey() {
+        // 从ThreadLocal中取出key:
         return datasourceContext.get();
+
     }
 
     public static void switchDataSource(String datasource) {
-        System.out.println(String.format("determine target datasource: %s}", datasource));
+
+        log.info("change db {}",datasource);
         datasourceContext.set(datasource);
+
     }
 
 }

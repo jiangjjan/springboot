@@ -4,11 +4,9 @@ spring:
       jdbcUrl: jdbc:mysql://localhost:3307/test?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
       username: root
       password: 123456
-      driver-class-name: com.mysql.cj.jdbc.Driver
     slave:
-      jdbcUrl: jdbc:mysql://localhost:3307/test?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
-      username: root
-      password: 123456
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbcUrl: jdbc:sqlserver://10.0.81.119:1433;DatabaseName=blsjk
+      username: lisuser
+      password: lisuser
 multidata:
   enable: true
