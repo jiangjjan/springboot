@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -30,8 +31,8 @@ public class MultiDataSourceBuilder {
     }
 
     @Bean("masterDataSource")
-    public DataSource masterDataSource(@Qualifier("masterProperties") HikariConfig config) {
-        return new HikariDataSource(config);
+    public DataSource masterDataSource(HikariConfig masterProperties) {
+        return new HikariDataSource(masterProperties);
     }
 
     @Bean
@@ -41,8 +42,8 @@ public class MultiDataSourceBuilder {
     }
 
     @Bean
-    public DataSource slaveDataSource(@Qualifier("slaveProperties") HikariConfig config) {
-        return new HikariDataSource(config);
+    public DataSource slaveDataSource( HikariConfig slaveProperties) {
+        return new HikariDataSource(slaveProperties);
     }
 
     @Primary
@@ -50,7 +51,7 @@ public class MultiDataSourceBuilder {
     DataSource dataSource(
             DataSource masterDataSource,
             DataSource slaveDataSource) {
-        var ds = new RoutingDataSource();
+        RoutingDataSource ds = new RoutingDataSource();
         Map<Object, Object> dataSourceMap = new HashMap<>();
         dataSourceMap.put("master", masterDataSource);
         dataSourceMap.put("slave", slaveDataSource);

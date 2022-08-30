@@ -8,6 +8,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -15,6 +17,7 @@ import java.lang.reflect.Method;
 @Component
 @Aspect
 @Slf4j
+@Order(-1)
 public class AopConfig {
 
     @Before("@annotation(dbType)||@within(dbType)")
@@ -32,7 +35,6 @@ public class AopConfig {
         if(annotation!=null)
             db=annotation.value();
 
-        System.out.println(name);
         log.info("current db is {}",db);
         RoutingDataSource.switchDataSource(db);
 

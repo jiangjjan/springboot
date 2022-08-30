@@ -4,6 +4,7 @@ package demo.model;
 import lombok.Data;
 import tk.mybatis.mapper.annotation.KeySql;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.time.LocalDateTime;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 public class Test {
 
     @KeySql(useGeneratedKeys=true)
+    @Id
     private  Long id;
 
     private String name;
