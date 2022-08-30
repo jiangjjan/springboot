@@ -15,19 +15,19 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 public class MultiDbController {
 
-   final DBService dbService;
+    final DBService dbService;
     final TestMapper testMapper;
 
     @GetMapping("master/list")
-    public Object mysqlDBList(String p){
+    public Object mysqlDBList(String p) {
         dbService.updateTest(p);
         Test test = testMapper.selectByName(p);
-        log.info("test result {}",test);
+        log.info("test result {}", test);
         return dbService.listTest("");
     }
 
     @GetMapping("slave/list")
-    public Object slaveDB(String p){
+    public Object slaveDB(String p) {
         dbService.updateRecordById(p);
         return dbService.listRecord();
     }
