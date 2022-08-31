@@ -7,6 +7,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -17,20 +18,13 @@ import java.lang.reflect.Method;
 @Component
 @Aspect
 @Slf4j
+@ConditionalOnProperty("multidata.enable")
 @Order(-1)
 public class AopConfig {
 
     @Before("@annotation(dbType)||@within(dbType)")
-    public void master(JoinPoint proc, DataSource dbType) throws Throwable {
-
-        String name = proc.getSignature().getName();
-        Object[] args = proc.getArgs();
-        Class<?>[]  type = new Class[args.length];
-        for(int i=0;i<args.length;i++){
-            type[i]=args[i].getClass();
-        }
-        Method method = proc.getTarget().getClass().getMethod(name, type);
-        DataSource annotation = method.getAnnotation(DataSource.class);
+    public void master(JoinPoint proc, DataSource dbType)  {
+        DataSource annotation = ((MethodSignature) proc.getSignature()).getMethod().getAnnotation(DataSource.class);
         String db = dbType.value();
         if(annotation!=null)
             db=annotation.value();

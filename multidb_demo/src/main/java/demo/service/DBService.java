@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Transactional 必须与 DataSource 一起使用,同时不然
+ */
 @Repository
 @RequiredArgsConstructor
 @DataSource
@@ -32,7 +35,7 @@ public class DBService {
         Test test = tests.get(0);
         test.setName(name);
         testMapper.updateByPrimaryKeySelective(test);
-        if (name.equals("throw"))
+        if ("throw".equals(name))
             throw new RuntimeException("throw roll back test");
     }
 

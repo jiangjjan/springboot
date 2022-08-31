@@ -3,3 +3,6 @@ GET http://localhost:8080/multi/master/list?p=qwe
 
 ###
 GET http://localhost:8080/multi/slave/list?p=qwe
+
+###
+GET http://localhost:8080/multi/name?name=1

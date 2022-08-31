@@ -21,7 +21,7 @@ public class MultiDbController {
     @GetMapping("master/list")
     public Object mysqlDBList(String p) {
         dbService.updateTest(p);
-        Test test = testMapper.selectByName(p);
+        Test test = testMapper.selectByName(p,p);
         log.info("test result {}", test);
         return dbService.listTest("");
     }
@@ -30,5 +30,10 @@ public class MultiDbController {
     public Object slaveDB(String p) {
         dbService.updateRecordById(p);
         return dbService.listRecord();
+    }
+
+    @GetMapping("name")
+    public Object selectByName(String name) {
+      return  testMapper.selectByName(name,name);
     }
 }
