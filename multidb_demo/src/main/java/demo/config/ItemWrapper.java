@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
 @Component
@@ -23,6 +22,7 @@ public class ItemWrapper implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+
         log.info("init itemMap");
         itemMap = Optional.ofNullable(itemInfos).orElse(new ArrayList<>()).stream().map(e -> {
             Map<String, Map<String, String>> res = new HashMap<>();
@@ -61,15 +61,15 @@ public class ItemWrapper implements InitializingBean {
          v.forEach(stringStringMap::putIfAbsent);
          }
          }, null, null));
-         */
-    }
 
-    public BiConsumer<Map<String, String>, Item> accumulator() {
-        return (map, element) -> {
-            String k = element.getName();
-            String v = element.getItemCode();
-            map.putIfAbsent(k, v);
-        };
+         }
+
+         public BiConsumer<Map<String, String>, Item> accumulator() {
+         return (map, element) -> {
+         String k = element.getName();
+         String v = element.getItemCode();
+         map.putIfAbsent(k, v);
+         }; */
     }
 
     @Data

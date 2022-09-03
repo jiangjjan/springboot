@@ -11,6 +11,5 @@ public class MultiDBApplication {
     public static void main(String[] args) {
         TimeZone.setDefault(TimeZone.getTimeZone("Asia/Shanghai"));
         SpringApplication.run(MultiDBApplication.class, args);
-        System.out.println(ItemWrapper.itemMap);
     }
 }
