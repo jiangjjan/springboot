@@ -14,6 +14,7 @@ public class Demo {
 
     @Test // List去重
     public void distinct() {
+
         List<Record> list = new ArrayList<>();
         list.add(new Record(1L, "name1", null));
         list.add(new Record(1L, "name2", null));
@@ -35,7 +36,6 @@ public class Demo {
                 ArrayList::new));
         System.out.println(collect);
 
-
     }
 
     @Test
@@ -54,7 +54,6 @@ public class Demo {
         Map<Long, String> collect3 = list1.stream().collect(Collectors.toMap(Record::getId, Record::getName, (a, b) -> b));
         System.out.println(collect3);
 
-
         // 允许value 为null ,key 重复
         List<Record> list2 = new ArrayList<>();
         list2.add(new Record(1L, "name1", null));
@@ -66,7 +65,6 @@ public class Demo {
                 (a, b) -> a, //这个函数不会参与计算
                 Collector.Characteristics.IDENTITY_FINISH));
         System.out.println(collect2);
-
 
     }
 
