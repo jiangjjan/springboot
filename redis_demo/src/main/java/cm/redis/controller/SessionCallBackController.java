@@ -7,6 +7,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.lang.NonNullApi;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -58,14 +59,17 @@ public class SessionCallBackController {
         });
     }
 
-
+    /**
+     * pipeLine 使用的是一个连接进行操作, 需要注意数据量, redis在6.0版本前为单线程操作, 数据大会堵塞其余操作
+     * @return
+     */
     @GetMapping("pipe")
     public List<Object> pipeLine() {
 
         return redis.executePipelined(new SessionCallback<>() {
 
             @Override
-            public Object execute(RedisOperations operations) throws DataAccessException {
+            public Object execute( RedisOperations operations) throws DataAccessException {
                 StopWatch watch = new StopWatch();
                 watch.start("addKey");
                 for (int i = 0; i < 10000; i++) {
