@@ -11,6 +11,33 @@ import java.util.stream.Collectors;
 @Slf4j
 public class Demo {
 
+
+    @Test // List去重
+    public void distinct() {
+        List<Record> list = new ArrayList<>();
+        list.add(new Record(1L, "name1", null));
+        list.add(new Record(1L, "name2", null));
+        list.add(new Record(2L, "name2", null));
+        list.add(new Record(2L, "name2", null));
+
+        //依赖对象自身的 equals 方法
+        List<Record> collect = list.stream().distinct().collect(Collectors.toList());
+        System.out.println(collect);
+
+        // 根据指定属性去重
+        collect = list.stream().collect(Collectors.collectingAndThen(
+                Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Record::getId))),
+                ArrayList::new));
+        log.info("collect :{}", collect);
+        log.info("list1 :{}", list);
+        collect = list.stream().collect(Collectors.collectingAndThen(
+                Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(Record::getName))),
+                ArrayList::new));
+        System.out.println(collect);
+
+
+    }
+
     @Test
     public void toMap() {
 
