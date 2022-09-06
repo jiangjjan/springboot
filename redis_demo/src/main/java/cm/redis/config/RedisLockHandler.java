@@ -25,16 +25,20 @@ public class RedisLockHandler {
     public Object redisTask(ProceedingJoinPoint proceedingJoinPoint, RedisTask redisTask) {
         Object proceed = null;
 
-        log.info("exec redisTask {}",proceedingJoinPoint.getSignature());
+        log.info("exec redisTask {}", proceedingJoinPoint.getSignature());
         log.debug("redis key is :{}", redisTask.value());
-        RLock lock = redissonClient.getLock(redisTask.value());
+        String key = redisTask.value();
+        if("defaultRedisTaskKey".equals(key)){
+            key = proceedingJoinPoint.getSignature().toString();
+        }
+        RLock lock = redissonClient.getLock(key);
         boolean isExec;
         try {
             if (redisTask.waitTime() == -1) {
-                log.debug("tryLock  with no params, exec {}",proceedingJoinPoint.getSignature());
+                log.debug("tryLock  with no params, exec {}", proceedingJoinPoint.getSignature());
                 isExec = lock.tryLock();
             } else {
-                log.debug("tryLock  with  params, exec {}",proceedingJoinPoint.getSignature());
+                log.debug("tryLock  with  params, exec {}", proceedingJoinPoint.getSignature());
                 isExec = lock.tryLock(redisTask.waitTime(), redisTask.releaseTime(), redisTask.unit());
             }
             if (isExec) {
@@ -42,12 +46,11 @@ public class RedisLockHandler {
                 proceed = proceedingJoinPoint.proceed();
             }
 
-            log.debug("end exec {}",proceedingJoinPoint.getSignature());
         } catch (Throwable ex) {
-            log.info("exec task {} exception  ",proceedingJoinPoint.getSignature(), ex);
+            log.info("exec task exception :{} ", proceedingJoinPoint.getSignature(), ex);
         } finally {
             lock.forceUnlock();
-            log.info(" end exec redisTask {}",proceedingJoinPoint.getSignature());
+            log.info("end exec redisTask {}", proceedingJoinPoint.getSignature());
         }
 
         return proceed;

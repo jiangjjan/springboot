@@ -43,27 +43,4 @@ public class RedissionLockController {
 
     }
 
-    @GetMapping("annotationLock")
-    public void annotationLock(){
-        List<Thread> list =new ArrayList<>();
-        for(int i=0;i<100;i++) {
-            list.add(
-                    new Thread(() -> {
-                        RLock lock = redissonClient.getLock(key);
-                        boolean b = lock.tryLock();
-                        if (b) {
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            System.out.println("-=-=-=-=-=-=-=-=-=-=--=-==-=---=-=-=-=-=-=-=tryLock success=============");
-                            lock.forceUnlock();
-                        }
-                    }));
-        }
-
-        list.parallelStream().forEach(Thread::start);
-
-    }
 }
