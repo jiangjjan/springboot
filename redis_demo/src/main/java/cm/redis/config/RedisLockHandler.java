@@ -28,9 +28,10 @@ public class RedisLockHandler {
         log.info("exec redisTask {}", proceedingJoinPoint.getSignature());
         log.debug("redis key is :{}", redisTask.value());
         String key = redisTask.value();
-        if("defaultRedisTaskKey".equals(key)){
+        if (RedisTask.Consist.defaultKey.equals(key)) {
             key = proceedingJoinPoint.getSignature().toString();
         }
+
         RLock lock = redissonClient.getLock(key);
         boolean isExec;
         try {

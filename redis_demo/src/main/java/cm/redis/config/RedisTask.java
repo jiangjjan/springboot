@@ -1,9 +1,9 @@
 package cm.redis.config;
 
-import org.springframework.core.annotation.AliasFor;
-
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;
+
+import static cm.redis.config.RedisTask.Consist.defaultKey;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 public @interface RedisTask {
 
 
-    String value() default "defaultRedisTaskKey";
+    String value() default defaultKey;
 
     long waitTime() default -1;
 
@@ -20,4 +20,8 @@ public @interface RedisTask {
     long delayTime() default 1000;
 
     TimeUnit unit() default TimeUnit.SECONDS;
+
+    interface Consist {
+        String defaultKey = "defaultRedisTaskKey";
+    }
 }
