@@ -17,7 +17,7 @@ public @interface RedisTask {
 
     long releaseTime() default -1;
 
-    long delayTime() default 1000;
+    long delayTime() default 0;
 
     TimeUnit unit() default TimeUnit.SECONDS;
 

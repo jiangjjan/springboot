@@ -11,27 +11,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class Task {
 
-    @Scheduled(cron = "*/10    *    *    *    *    *")
+    @Scheduled(cron = "*/1    *    *    *    *    *")
     @RedisTask("keys")
     public void taskA() {
         log.info("exec taskA");
     }
 
-    @Scheduled(cron = "*/10    *    *    *    *    *")
+    @Scheduled(cron = "*/1    *    *    *    *    *")
     @RedisTask("keys")
     public void taskB() {
         log.info("exec taskB");
     }
 
     @RedisTask("keys")
-    @Scheduled(cron = "*/10    *    *    *    *    *")
+    @Scheduled(cron = "*/1    *    *    *    *    *")
     public void taskC() {
         log.info("exec taskC");
 
     }
 
     @RedisTask(value = "keys")
-    @Scheduled(cron = "*/10    *    *    *    *    *")
+    @Scheduled(cron = "*/1    *    *    *    *    *")
     public void taskD() {
         log.info("exec taskD");
 
