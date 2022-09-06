@@ -1,5 +1,5 @@
 ###
-GET http://localhost:{{port}}/bind/web?name=namevalue&time=2021-12-12 12:21:19
+GET http://localhost:8080/bind/web?name=namevalue&time=2021-12-12 12:21:19
 
 ###
 POST http://localhost:{{port}}/bind/json

@@ -30,7 +30,7 @@ public class Task {
 
     }
 
-    @RedisTask("keys")
+    @RedisTask(value = "keys")
     @Scheduled(cron = "*/10    *    *    *    *    *")
     public void taskD() {
         log.info("exec taskD");

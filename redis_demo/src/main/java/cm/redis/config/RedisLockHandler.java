@@ -27,10 +27,6 @@ public class RedisLockHandler {
 
         log.info("exec redisTask {}", proceedingJoinPoint.getSignature());
 
-        System.out.println(proceedingJoinPoint.getSignature().toLongString());
-        System.out.println(proceedingJoinPoint.getSignature().toShortString());
-        System.out.println(proceedingJoinPoint.getSignature().toString());
-
          log.debug("redis key is :{}", redisTask.value());
         String key = redisTask.value();
         if (RedisTask.Consist.defaultKey.equals(key)) {
