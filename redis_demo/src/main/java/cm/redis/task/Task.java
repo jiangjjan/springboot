@@ -2,7 +2,6 @@ package cm.redis.task;
 
 import cm.redis.config.RedisTask;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ public class Task {
     @RedisTask("keys")
     public void taskA() {
         log.info("exec taskA");
-
     }
 
     @Scheduled(cron = "*/10    *    *    *    *    *")
