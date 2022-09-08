@@ -6,10 +6,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
+
+import static cm.redis.config.RedisKey.Consist.defaultKey;
 
 @Aspect
 @EnableAsync
@@ -21,38 +24,32 @@ public class RedisLockHandler {
 
     final RedissonClient redissonClient;
 
-    @Around("@annotation(redisTask)")
-    public Object redisTask(ProceedingJoinPoint proceedingJoinPoint, RedisTask redisTask) {
+    @Around("@annotation(org.springframework.scheduling.annotation.Scheduled)")
+    public Object redisKey(ProceedingJoinPoint proceedingJoinPoint) {
+
+        log.info("start Scheduled {}", proceedingJoinPoint.getSignature());
         Object proceed = null;
 
-        log.info("exec redisTask {}", proceedingJoinPoint.getSignature());
+        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
+        RedisKey redisKey = signature.getMethod().getAnnotation(RedisKey.class);
 
-         log.debug("redis key is :{}", redisTask.value());
-        String key = redisTask.value();
-        if (RedisTask.Consist.defaultKey.equals(key)) {
-            key = proceedingJoinPoint.getSignature().toString();
+        String key = signature.toLongString();
+        if (redisKey != null && !defaultKey.equals(key)) {
+            key = redisKey.value();
         }
 
         RLock lock = redissonClient.getLock(key);
-        boolean isExec;
         try {
-            if (redisTask.waitTime() == -1) {
-                log.debug("tryLock  with no params, exec {}", proceedingJoinPoint.getSignature());
-                isExec = lock.tryLock();
-            } else {
-                log.debug("tryLock  with  params, exec {}", proceedingJoinPoint.getSignature());
-                isExec = lock.tryLock(redisTask.waitTime(), redisTask.releaseTime(), redisTask.unit());
-            }
-            if (isExec) {
-                Thread.sleep(redisTask.delayTime());
+            if (lock.tryLock()) {
+                if (redisKey != null)
+                    Thread.sleep(redisKey.delayTime());
                 proceed = proceedingJoinPoint.proceed();
             }
-
         } catch (Throwable ex) {
-            log.info("exec task exception :{} ", proceedingJoinPoint.getSignature(), ex);
+            throw new RuntimeException(ex);
         } finally {
             lock.forceUnlock();
-            log.info("end exec redisTask {}", proceedingJoinPoint.getSignature());
+            log.info("end exec {}  ", proceedingJoinPoint.getSignature());
         }
 
         return proceed;

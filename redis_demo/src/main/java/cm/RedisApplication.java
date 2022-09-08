@@ -1,31 +1,43 @@
 package cm;
 
-import cm.redis.mapper.TestMapper;
-import com.zaxxer.hikari.HikariDataSource;
-import org.apache.ibatis.mapping.Environment;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
-import org.junit.jupiter.api.Test;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
+import org.redisson.api.RScheduledExecutorService;
+import org.redisson.api.RedissonClient;
+import org.redisson.api.redisnode.RedisNodes;
+import org.redisson.api.redisnode.RedisSingle;
+import org.redisson.config.Config;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Repository;
-import org.apache.ibatis.session.Configuration;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @SpringBootApplication
 @EnableScheduling
 @MapperScan(annotationClass = Repository.class)
+@Slf4j
 public class RedisApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(RedisApplication.class, args);
-//        System.out.println(LocalDateTime.now());
+        ConfigurableApplicationContext run = SpringApplication.run(RedisApplication.class, args);
+
+        final RedissonClient client = run.getBean(RedissonClient.class);
+
+        RedisSingle redisNodes = client.getRedisNodes(RedisNodes.SINGLE);
+        log.info("123123123123123123123");
+//        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+        RScheduledExecutorService scheduledExecutorService = client.getExecutorService("adasda");
+        scheduledExecutorService.scheduleAtFixedRate((Runnable & Serializable) () -> System.out.println("====================++++++++++++++++++++++++++"), 0, 5, TimeUnit.SECONDS);
+
+
+        //        System.out.println(LocalDateTime.now());
 //        HikariDataSource dataSource = new HikariDataSource();
 //        dataSource.setUsername("root");
 //        dataSource.setPassword("123456");
