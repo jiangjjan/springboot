@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@CacheConfig( cacheManager = "local",cacheNames = "testGroup")
+@CacheConfig( cacheManager = "caffeine",cacheNames = "testGroup")
 public class TestUseAnnotationService {
 
     final TestMapper testMapper;
@@ -39,7 +39,7 @@ public class TestUseAnnotationService {
 
     }
 
-    @Cacheable(key = "'allList'", unless = "#result.size()==0",cacheResolver = "doubleCache")
+    @Cacheable(key = "'allList'", unless = "#result.size()==0",cacheResolver = "multiCache")
     public List<Test> listTest() {
         log.info("exec  cache listTest");
         return testMapper.listTest();

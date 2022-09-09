@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Test {
+public class Test implements Id {
     private Long id;
     private String name;
     private LocalDateTime createTime;

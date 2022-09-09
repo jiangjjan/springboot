@@ -1,5 +1,6 @@
 package cm.redis.mapper;
 
+import cm.redis.model.Id;
 import cm.redis.model.Test;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
@@ -13,7 +14,7 @@ import java.util.Optional;
 public interface TestMapper {
 
     @Select("select * from t_test where id = #{id}")
-    Optional<Test> selectOne(Test param);
+    Optional<Test> selectOne(Id param);
 
     @Select("select * from t_test")
     List<Test> listTest();
