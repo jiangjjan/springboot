@@ -28,15 +28,6 @@ public class RedisApplication {
     public static void main(String[] args) {
         ConfigurableApplicationContext run = SpringApplication.run(RedisApplication.class, args);
 
-        final RedissonClient client = run.getBean(RedissonClient.class);
-
-        RedisSingle redisNodes = client.getRedisNodes(RedisNodes.SINGLE);
-        log.info("123123123123123123123");
-//        ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
-        RScheduledExecutorService scheduledExecutorService = client.getExecutorService("adasda");
-        scheduledExecutorService.scheduleAtFixedRate((Runnable & Serializable) () -> System.out.println("====================++++++++++++++++++++++++++"), 0, 5, TimeUnit.SECONDS);
-
-
         //        System.out.println(LocalDateTime.now());
 //        HikariDataSource dataSource = new HikariDataSource();
 //        dataSource.setUsername("root");

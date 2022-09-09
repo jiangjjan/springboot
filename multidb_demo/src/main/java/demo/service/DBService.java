@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * Transactional 必须与 DataSource 一起使用,同时不然
+ * Transactional 必须与 DataSource 一起使用,否则会使用默认的数据源
  */
 @Repository
 @RequiredArgsConstructor

@@ -1,6 +1,5 @@
 package cm.redisson.controller;
 
-import cm.redis.model.Test;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.redisson.api.RLock;
@@ -23,20 +22,14 @@ public class RedissonController {
 
     final RedissonClient redissonClient;
 
-   static ThreadLocal<Test> testThreadLocal = ThreadLocal.withInitial(Test::new);
 
     @GetMapping("leaseTime")
     public String leaseTime() throws InterruptedException {
-        a();
-        System.out.println(testThreadLocal.get());
+
+        RLock lock = redissonClient.getLock("asdaaddasda");
+        lock.tryLock(-1,-1,TimeUnit.SECONDS);
         return "SUCCESS";
 
-    }
-
-    private void a() {
-        Test test = testThreadLocal.get();
-        System.out.println("a:"+test);
-        test.setName("=================");
     }
 
     @GetMapping("testLock")
