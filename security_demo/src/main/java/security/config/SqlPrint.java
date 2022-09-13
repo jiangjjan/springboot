@@ -6,6 +6,7 @@ import org.apache.ibatis.logging.log4j2.Log4j2LoggerImpl;
 
 @Slf4j
 public class SqlPrint implements Log {
+
     public SqlPrint(String clazz) {
         // Do Nothing
     }
