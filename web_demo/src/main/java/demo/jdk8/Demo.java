@@ -99,7 +99,8 @@ public class Demo {
         log.info("_1025Repeat :{}", _1025Repeat);
 
         //\值可以为null
-        Map<String, Map<String, String>> collect = list.stream().map(Map::entrySet).flatMap(Set::stream).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> {
+        Map<String, Map<String, String>> collect = list.stream().map(Map::entrySet)
+                .flatMap(Set::stream).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> {
             log.info("a :{}", a);
             log.info("b :{}", b);
             b.forEach(a::putIfAbsent);
