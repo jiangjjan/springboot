@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @see ProceedingJoinPoint#toLongString()
  */
-@Target({ElementType.METHOD})
+@Target({ElementType.METHOD,ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ExecOnce {
