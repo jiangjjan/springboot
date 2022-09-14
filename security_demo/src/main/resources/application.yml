@@ -46,3 +46,9 @@ server:
 logging:
   level:
     security: debug
+sys:
+  config:
+    key: userdefinepbk
+
+
+
