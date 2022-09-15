@@ -17,7 +17,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-@CacheConfig( cacheManager = "caffeine",cacheNames = "testGroup")
+@CacheConfig( cacheManager = "redis",cacheNames = "testGroup")
 public class TestUseAnnotationService {
 
     final TestMapper testMapper;

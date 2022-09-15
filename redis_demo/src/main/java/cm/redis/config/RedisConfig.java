@@ -10,6 +10,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
@@ -18,11 +19,13 @@ import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCust
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.JacksonProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.cache.interceptor.CacheErrorHandler;
+import org.springframework.cache.interceptor.CacheOperationInvocationContext;
 import org.springframework.cache.interceptor.CacheResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,9 +43,7 @@ import org.springframework.lang.Nullable;
 
 import javax.annotation.PostConstruct;
 import java.time.Duration;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Configuration
@@ -170,9 +171,39 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public CacheResolver multiCache(CacheManager redis, CacheManager caffeine) {
+    public CacheResolver multiCache(@Qualifier("redis") CacheManager redis,@Qualifier("caffeine") CacheManager caffeine) {
 
-        return new MultiCache(caffeine, redis);
+        return new MultiCache(List.of(caffeine,redis));
+
+    }
+
+    public static class MultiCache implements CacheResolver {
+
+
+        final List<CacheManager> cacheManagers ;
+
+        public MultiCache(List<CacheManager> cacheManagers) {
+            this.cacheManagers=cacheManagers;
+        }
+
+        @Override
+        public Collection<? extends Cache> resolveCaches(CacheOperationInvocationContext<?> context) {
+
+            Collection<String> cacheNames = context.getOperation().getCacheNames();
+
+            Collection<Cache> result = new ArrayList<>(cacheNames.size());
+
+            for (String cacheName : cacheNames) {
+
+                List<Cache> collect = cacheManagers.stream().map(e -> e.getCache(cacheName)).collect(Collectors.toList());
+                result.addAll(collect);
+                if (result.size() == 0) {
+                    throw new IllegalArgumentException("Cannot find cache named '" +
+                            cacheName + "' for " + context.getOperation());
+                }
+            }
+            return result;
+        }
 
     }
 

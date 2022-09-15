@@ -11,6 +11,7 @@ import com.github.benmanes.caffeine.cache.Caffeine;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizer;
 import org.springframework.boot.autoconfigure.cache.CacheManagerCustomizers;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
@@ -171,7 +172,7 @@ public class RedisConfig extends CachingConfigurerSupport {
     }
 
     @Bean
-    public CacheResolver multiCache(CacheManager redis, CacheManager caffeine) {
+    public CacheResolver multiCache(@Qualifier("redis") CacheManager redis,@Qualifier("caffeine") CacheManager caffeine) {
 
         return new MultiCache(caffeine, redis);
 
