@@ -1,0 +1,182 @@
+spring:
+  shardingsphere:
+    props:
+      sql:
+        show: true # 打印SQL
+    # 配置真实数据源
+    dataSource:
+      names: db1  # 多数据源用逗号隔开
+      db1: # 配置name为superapp的数据源
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://10.0.11.56:6666/lego_sample?useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
+        username: root
+        password: Y</5@jQ01Sp
+        connection-timeout: 3000 # 等待连接池分配连接的最大时长（毫秒），超过这个时长还没可用的连接则发生SQLException， 缺省:30秒
+        idle-timeout: 600000 # 一个连接idle状态的最大时长（毫秒），超时则被释放（retired），缺省:10分钟
+        max-lifetime: 1800000 # 一个连接的生命时长（毫秒），超时而且没被使用则被释放（retired），缺省:30分钟，建议设置比数据库超时时长少30秒
+        maximum-pool-size: 60 # 连接池中允许的最大连接数。缺省值：10
+        minimum-idle: 2
+    sharding:
+      # 配置分片规则
+      default-data-source-name: sample-center
+      bindingTables:
+        - t_blood_separate_task, t_blood_separate_task_details, t_sample_receive_record, t_sample_status, t_abnormal_sample_record, t_manual_sample_registration, v_manual_sample_registration, t_instrument_sorting_details,t_instrument_sorting,t_tube_rack_handover_status,t_virtual_sorting,t_sample_flow, t_sample_monitor_detail,v_sample_not_arr,v_sample_not_sort,v_sample_not_blood,v_sample_lab_group,v_special_sample,t_incomplete_entry_sort_monitor,t_special_sample_monitor,t_entrust_task,t_entrust_detail,t_lis_sync_record, t_covid19_report,t_sample_add_tem_task
+      tables:
+        # 配置 t_blood_separate_task表规则
+        t_blood_separate_task:
+          actual-data-nodes: sample-center.t_blood_separate_task_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_blood_separate_task_${ org_code }
+        t_blood_separate_task_details:
+          actual-data-nodes: sample-center.t_blood_separate_task_details_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_blood_separate_task_details_${ org_code }
+        t_sample_receive_record:
+          actual-data-nodes: sample-center.t_sample_receive_record_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_sample_receive_record_${ org_code }
+        t_sample_status:
+          actual-data-nodes: sample-center.t_sample_status_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_sample_status_${ org_code }
+        t_abnormal_sample_record:
+          actual-data-nodes: sample-center.t_abnormal_sample_record_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_abnormal_sample_record_${ org_code }
+        t_manual_sample_registration:
+          actual-data-nodes: sample-center.t_manual_sample_registration_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_manual_sample_registration_${ org_code }
+        v_manual_sample_registration:
+          actual-data-nodes: sample-center.v_manual_sample_registration_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: orgCode
+              algorithmExpression: v_manual_sample_registration_${ orgCode }
+        v_sample_not_arr:
+          actual-data-nodes: sample-center.v_sample_not_arr_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: orgCode
+              algorithmExpression: v_sample_not_arr_${ orgCode }
+        v_sample_not_sort:
+          actual-data-nodes: sample-center.v_sample_not_sort_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: orgCode
+              algorithmExpression: v_sample_not_sort_${ orgCode }
+        v_sample_not_blood:
+          actual-data-nodes: sample-center.v_sample_not_blood_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: orgCode
+              algorithmExpression: v_sample_not_blood_${ orgCode }
+        v_sample_lab_group:
+          actual-data-nodes: sample-center.v_sample_lab_group_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: orgCode
+              algorithmExpression: v_sample_lab_group_${ orgCode }
+        v_special_sample:
+          actual-data-nodes: sample-center.v_special_sample_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: orgCode
+              algorithmExpression: v_special_sample_${ orgCode }
+        t_instrument_sorting_details:
+          actual-data-nodes: sample-center.t_instrument_sorting_details_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_instrument_sorting_details_${ org_code }
+        t_instrument_sorting:
+          actual-data-nodes: sample-center.t_instrument_sorting_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_instrument_sorting_${ org_code }
+        t_tube_rack_handover_status:
+          actual-data-nodes: sample-center.t_tube_rack_handover_status_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_tube_rack_handover_status_${ org_code }
+        t_virtual_sorting:
+          actual-data-nodes: sample-center.t_virtual_sorting_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_virtual_sorting_${ org_code }
+        t_sample_flow:
+          actual-data-nodes: sample-center.t_sample_flow_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_sample_flow_${ org_code }
+        t_sample_monitor_detail:
+          actual-data-nodes: sample-center.t_sample_monitor_detail_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_sample_monitor_detail_${ org_code }
+        t_incomplete_entry_sort_monitor:
+          actual-data-nodes: sample-center.t_incomplete_entry_sort_monitor_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_incomplete_entry_sort_monitor_${ org_code }
+        t_special_sample_monitor:
+          actual-data-nodes: sample-center.t_special_sample_monitor_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_special_sample_monitor_${ org_code }
+        t_entrust_task:
+          actual-data-nodes: sample-center.t_entrust_task_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_entrust_task_${ org_code }
+        t_entrust_detail:
+          actual-data-nodes: sample-center.t_entrust_detail_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_entrust_detail_${ org_code }
+        t_lis_sync_record:
+          actual-data-nodes: sample-center.t_lis_sync_record_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_lis_sync_record_${ org_code }
+        t_covid19_report:
+          actual-data-nodes: sample-center.t_covid19_report_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_covid19_report_${ org_code }
+        t_sample_add_item_task:
+          actual-data-nodes: sample-center.t_sample_add_item_task_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_sample_add_item_task_${ org_code }
+        t_epiboly:
+          actual-data-nodes: sample-center.t_epiboly_${1000..9999}
+          tableStrategy:
+            inline:
+              shardingColumn: org_code
+              algorithmExpression: t_epiboly_${ org_code }

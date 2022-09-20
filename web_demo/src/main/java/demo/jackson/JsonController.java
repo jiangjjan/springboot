@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 public class JsonController {
@@ -30,6 +32,12 @@ public class JsonController {
         p.setName("name");
         p.setStatus(StatusEnum.FAIL);
         System.out.println(json.writeValueAsString(p));
+        return param;
+    }
+
+    @GetMapping("req")
+    public Object aa( @RequestBody  Map<String,String> param) throws JsonProcessingException {
+        System.out.println(param);
         return param;
     }
 

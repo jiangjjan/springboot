@@ -8,26 +8,28 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="batch" />
-        <module name="multidb_demo" />
+        <module name="tomcathhttps" />
         <module name="websocket_demo" />
         <module name="web" />
         <module name="security" />
         <module name="redis-demo" />
-        <module name="tomcathhttps" />
+        <module name="sharding" />
+        <module name="multidb_demo" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="active_mq" target="1.8" />
-      <module name="batch" target="9" />
+      <module name="batch" target="11" />
       <module name="lucene" target="9" />
-      <module name="multidb_demo" target="9" />
+      <module name="multidb_demo" target="11" />
       <module name="rabbit_mq" target="1.8" />
-      <module name="redis-demo" target="9" />
-      <module name="security" target="9" />
-      <module name="springboot" target="9" />
-      <module name="tomcathhttps" target="9" />
+      <module name="redis-demo" target="11" />
+      <module name="security" target="11" />
+      <module name="sharding" target="11" />
+      <module name="springboot" target="11" />
+      <module name="tomcathhttps" target="11" />
       <module name="web" target="9" />
-      <module name="websocket_demo" target="9" />
+      <module name="websocket_demo" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -39,6 +41,7 @@
       <module name="rabbit_mq" options="-parameters" />
       <module name="redis-demo" options="-parameters" />
       <module name="security" options="-parameters" />
+      <module name="sharding" options="-parameters" />
       <module name="tomcathhttps" options="-parameters" />
       <module name="web" options="-parameters" />
       <module name="websocket_demo" options="-parameters" />
