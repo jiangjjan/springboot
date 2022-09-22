@@ -73,11 +73,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .sessionManagement()
                 .invalidSessionUrl("/login.html") //session 超时重新登录
+
                 .and()
                 .authorizeRequests()
                 .antMatchers("**/admin/**").hasRole(admin.getAuthority())
                 .antMatchers("**/user/**").hasAnyRole(admin.getAuthority(),user.getAuthority())
                 .anyRequest().authenticated() // 所有路劲都需要鉴权
+
                 .and()
                 .formLogin()
                 .usernameParameter("name") // 表单内账户 key
@@ -88,17 +90,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     log.info("login success"); //登陆成功返回json
                     response.setContentType("application/json;charset=utf-8");
                     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-                    response.getWriter().write(json.writeValueAsString(Result.success("success:"+authorities.toString())));
+                    response.getWriter().write(json.writeValueAsString(Result.success("success:" + request.getSession().getId())));
                 })
-                .failureHandler((request,response,exception)->{
+                .failureHandler((request, response, exception) -> {
                     log.info("login fail");  //登陆失败返回json
                     response.setContentType("application/json;charset=utf-8");
-                    response.getWriter().write(json.writeValueAsString(Result.success("fail:"+exception.getMessage())));
+                    response.getWriter().write(json.writeValueAsString(Result.success("fail:" + exception.getMessage())));
                 })
                 .permitAll()
+
                 .and()
                 .httpBasic()
-        .and().requestCache();
+                .and().headers().addHeaderWriter(new HeaderWriterCopy());
 
     }
 

@@ -3,7 +3,15 @@
   <component name="ExternalSystem" externalSystem="Maven" />
   <component name="FacetManager">
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="HeaderWriterCopy" removed="false">
+          <file>file://$MODULE_DIR$/src/main/java/security/config/HeaderWriterCopy.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/security/config/PasswordEncoderConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/security/config/RedisConfig.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/security/SecurityApplication.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/security/config/SecurityConfig.java</file>
+        </fileset>
+      </configuration>
     </facet>
     <facet type="web" name="Web">
       <configuration>
