@@ -19,6 +19,7 @@ public class PasswordEncoderConfig {
 
     String key;
 
+    // 注入SpringContext后, 会自动使用,也可以在配置里单独配置
     @Bean
     public PasswordEncoder passwordEncoder() {
         log.info("config key is :{}",key);

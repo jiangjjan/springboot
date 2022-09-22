@@ -17,11 +17,13 @@ public class CustomizationCheck {
 
 
 	public boolean check(String name){
-		System.out.println(name);
+
+		log.info("param : {}", name);
 		SecurityContext context = SecurityContextHolder.getContext();
 		Authentication authentication = context.getAuthentication();
 		Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-		System.out.println(authorities);
+		log.info("GrantedAuthority :{}",authorities);
+
 		return true;
 	}
 

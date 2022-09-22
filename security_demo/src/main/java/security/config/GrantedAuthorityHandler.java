@@ -1,5 +1,8 @@
 package security.config;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 import org.springframework.security.core.GrantedAuthority;
@@ -48,8 +51,21 @@ public class GrantedAuthorityHandler extends BaseTypeHandler<Set<GrantedAuthorit
         } else {
             String[] split = p.split(split_char);
             Set<GrantedAuthority> re = new HashSet<>();
-            Arrays.stream(split).distinct().map(SimpleGrantedAuthority::new).forEach(re::add);
+            Arrays.stream(split).distinct().map(GrantedAuthorityRole::new).forEach(re::add);
             return re;
+        }
+    }
+
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Data
+    public static class GrantedAuthorityRole  implements GrantedAuthority{
+
+        String role;
+
+        @Override
+        public String getAuthority() {
+            return role;
         }
     }
 }

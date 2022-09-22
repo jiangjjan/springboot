@@ -5,7 +5,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 public interface RoleDefine {
 
-    GrantedAuthority root = new  SimpleGrantedAuthority("ROOT");
 
     GrantedAuthority admin = new  SimpleGrantedAuthority("ADMIN");
 

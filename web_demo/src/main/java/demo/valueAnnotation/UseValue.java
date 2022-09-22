@@ -8,6 +8,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.Files;
 
@@ -28,8 +29,13 @@ public class UseValue {
     @Value("#{T(demo.valueAnnotation.OtherBean).generate('123&231')}")
     private String random;
 
-    @Value("${server.port:8080}")
+    @Value("[${server.port:80}]")
     private String fromConfig;
+
+    @Value("${dingtalk.name:}")
+    String name;
+    @Value("${dingtalk.name:jdbc:mysql://10.0.11.5}")
+    String mysql;
 
     @Value("classpath:file/file.txt")
     private Resource file;
@@ -40,7 +46,9 @@ public class UseValue {
     @Autowired
     Environment environment;
 
+    @PostConstruct
     public void print() throws IOException {
+        log.info("name {}, mysql {}",name,mysql);
         log.info("normal:{}", normalStr);
         log.info("osName,{}", osName);
         log.info("otherBeanProperty,{}", otherBeanProperty);

@@ -1,2 +1,6 @@
 ###
 GET  http://localhost:8081/interceptor
+
+###
+GET https://limscloud-test.adicon.com.cn:1090/api-test/task/exec/checkHealth?taskName=test
+X-Org-Code:1023

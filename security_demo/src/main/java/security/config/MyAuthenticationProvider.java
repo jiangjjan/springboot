@@ -6,18 +6,13 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import security.mapper.UserInfoMapper;
 
-import java.util.Collections;
 import java.util.Objects;
 
-@Component
+// 注入上下文后会自动使用
 @RequiredArgsConstructor
 public class MyAuthenticationProvider implements AuthenticationProvider {
 
@@ -43,10 +38,6 @@ public class MyAuthenticationProvider implements AuthenticationProvider {
 			}
 		}
 
-//		UserDetails user = new User("root", "", Collections.singleton(new SimpleGrantedAuthority("root")));
-//		UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(user, authentication.getCredentials(), user.getAuthorities());
-//		result.setDetails(authentication.getDetails());
-//		return result;
 	}
 
 	@Override

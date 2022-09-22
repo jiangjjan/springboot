@@ -30,11 +30,4 @@ public class TaskController implements SchedulingConfigurer {
        }
     }
 
-
-    public static void main(String[] args) {
-        String a = "com.adicon.test.service.BiochemicalMaterialsService.syncK3";
-        String substring = a.substring(0, a.lastIndexOf("."));
-        System.out.println(substring);
-        System.out.println(a.substring(a.lastIndexOf(".")+1));
-    }
 }

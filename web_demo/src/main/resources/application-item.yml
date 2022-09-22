@@ -1,0 +1,25 @@
+iteminfoconfig:
+  itemInfos:
+    1025:
+      MicroscopyWorm_0007: HEL
+#          itemCode:
+#        - name: FecesMicroscopyWhite_0007
+#          itemCode: JJWBC
+#        - name: FecesMicroscopyRed_0007
+#          itemCode: JJRBC
+#        - name: FecesColor_0007
+#          itemCode: COL
+#        - name: FecesCharacter_0007
+#          itemCode: CHA
+#    - orgCode: 1023
+#      items:
+#        - name: FecesMicroscopyWhite_0007
+#          itemCode: WBC1
+#        - name: FecesMicroscopyRed_0007
+#          itemCode: RBC1
+  map:
+    1234:
+      a: b
+      c: d
+    1222:
+      c: asd

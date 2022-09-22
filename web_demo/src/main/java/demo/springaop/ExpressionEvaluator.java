@@ -16,9 +16,9 @@ public class ExpressionEvaluator extends CachedExpressionEvaluator {
 
 	private final Map<ExpressionKey, Expression> keyCache = new ConcurrentHashMap<>(64);
 
-	ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
+	static ParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
-	public EvaluationContext createEvaluationContext(Object rootObject, Method method, Object[] arguments) {
+	public  EvaluationContext createEvaluationContext(Object rootObject, Method method, Object[] arguments) {
 		return new MethodBasedEvaluationContext(rootObject,method,arguments,parameterNameDiscoverer);
 	}
 

@@ -8,13 +8,15 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum SexEnum implements BaseEnum {
-    MAN(1),
-    WOMAN(0),
-    UNKNOW(2),
+    MAN(1,"男"),
+    WOMAN(0,"女"),
+    UNKNOW(2,"不详"),
     ;
 
     @JsonValue
     public final int code;
+
+    public final String desc;
 
 
     @Override

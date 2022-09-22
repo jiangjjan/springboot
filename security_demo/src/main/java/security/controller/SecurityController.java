@@ -2,18 +2,21 @@ package security.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import security.mapper.UserInfoMapper;
 import security.model.UserInfo;
 
-import java.sql.Wrapper;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @RestController
 @RequestMapping("security")
@@ -23,21 +26,25 @@ public class SecurityController {
 
     final UserInfoMapper userMapper;
 
-    @PreAuthorize("hasAnyAuthority(T(security.config.RoleDefine).root.authority)")
+    @PreAuthorize("hasAnyAuthority(T(security.config.RoleDefine).admin.authority)")
     @GetMapping("get")
     public Object test() {
 
-        List<UserInfo> userInfos = userMapper.selectAll();
-        return userInfos.stream().map(e -> new User(e.getUsername(), e.getPassword(), e.getEnabled(),
-                e.getAccountNonExpired(), e.getCredentialsNonExpired(),
-                e.getAccountNonLocked(), e.getAuthorities())).collect(Collectors.toList());
+        return userMapper.selectAllUser();
+
     }
 
     @PreAuthorize("@cs.check(#name)")
     @GetMapping("role")
     public Object role(String name) {
 
-      return "role";
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        String sessionId = requestAttributes.getSessionId();
+        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
+        log.info("sessionId {}",sessionId);
+        log.info("getRemoteUser {}", request.getRemoteUser());
+        return "role";
+
     }
 
 }

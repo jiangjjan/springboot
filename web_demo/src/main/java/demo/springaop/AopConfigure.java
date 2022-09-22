@@ -4,9 +4,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.core.annotation.Order;
+import org.springframework.expression.EvaluationContext;
 import org.springframework.util.StopWatch;
+
+import java.lang.reflect.Method;
 
 
 @Aspect
@@ -57,6 +62,22 @@ public class AopConfigure {
     public void logTimePointReturn(JoinPoint joinpoint, LogConsumerTime param) {
         LogConsumerTime a = getAnnotatiom(joinpoint, param);
         log.info("AfterReturning exec {},value:{}", joinpoint.getSignature().getName(), a.value());
+    }
+
+    ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator();
+    @Order(1)
+    @Before("@annotation(param)")
+    public void param(JoinPoint joinpoint, Param param) {
+        log.info("exec param");
+        MethodSignature signature = (MethodSignature) joinpoint.getSignature();
+        Object target = joinpoint.getTarget();
+        Method method = signature.getMethod();
+        EvaluationContext evaluationContext = expressionEvaluator.createEvaluationContext(target,method, joinpoint.getArgs());
+        Object o = expressionEvaluator.getExpressionValue(param.value(),new AnnotatedElementKey(method,target.getClass()),evaluationContext);
+
+        Object o1 = evaluationContext.lookupVariable(param.value());
+        System.out.println(o1);
+        System.out.println(o);
     }
 
 }

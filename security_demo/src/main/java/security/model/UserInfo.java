@@ -2,33 +2,76 @@ package security.model;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
-import security.config.GrantedAuthorityHandler;
-import tk.mybatis.mapper.annotation.ColumnType;
-import tk.mybatis.mapper.annotation.KeySql;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Set;
 
-@Table(name="user")
 @Data
-public class UserInfo{
+public class UserInfo implements UserDetails {
 
-    @KeySql(useGeneratedKeys = true)
     Long id;
     String username;
-
     String password;
-    Boolean accountNonExpired;
-    Boolean accountNonLocked;
-    Boolean credentialsNonExpired;
-    Boolean enabled;
-
-    @ColumnType(typeHandler = GrantedAuthorityHandler.class)
+    boolean accountNonExpired;
+    boolean accountNonLocked;
+    boolean credentialsNonExpired;
+    boolean enabled;
     Set<GrantedAuthority> authorities;
-
-    /**
-     * 0 未删除
-     */
+    String note;
+    LocalDateTime expiredTime;
+    /*** 0 未删除*/
     long deleted;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(super.toString()).append(": ");
+        sb.append("Username: ").append(this.username).append("; ");
+        sb.append("Password: [PROTECTED]; ");
+        sb.append("Enabled: ").append(this.enabled).append("; ");
+        sb.append("AccountNonExpired: ").append(this.accountNonExpired).append("; ");
+        sb.append("credentialsNonExpired: ").append(this.credentialsNonExpired)
+                .append("; ");
+        sb.append("AccountNonLocked: ").append(this.accountNonLocked).append("; ");
+        sb.append("ExpiredTime: ").append(this.expiredTime).append("; ");
+
+        if (!authorities.isEmpty()) {
+            sb.append("Granted Authorities: ");
+
+            boolean first = true;
+            for (GrantedAuthority auth : authorities) {
+                if (!first) {
+                    sb.append(",");
+                }
+                first = false;
+                sb.append(auth);
+            }
+        }
+        else {
+            sb.append("Not granted any authorities");
+        }
+
+        return sb.toString();
+    }
 
 }
