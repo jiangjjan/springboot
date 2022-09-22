@@ -90,12 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     log.info("login success"); //登陆成功返回json
                     response.setContentType("application/json;charset=utf-8");
                     Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
-                    response.getWriter().write(json.writeValueAsString(Result.success("success:" + request.getSession().getId())));
+                    response.getWriter().write(json.writeValueAsString(Result.success(request.getSession().getId())));
                 })
                 .failureHandler((request, response, exception) -> {
                     log.info("login fail");  //登陆失败返回json
                     response.setContentType("application/json;charset=utf-8");
-                    response.getWriter().write(json.writeValueAsString(Result.success("fail:" + exception.getMessage())));
+                    response.getWriter().write(json.writeValueAsString(Result.success(exception.getMessage())));
                 })
                 .permitAll()
 
