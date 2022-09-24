@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.MediaType;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,17 +12,21 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.filter.OncePerRequestFilter;
 import security.model.Result;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
-import java.util.Locale;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
-import static security.config.RoleDefine.*;
+import static security.config.RoleDefine.admin;
+import static security.config.RoleDefine.user;
 
 @Configuration
 @RequiredArgsConstructor
@@ -32,6 +36,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     final ObjectMapper json;
+    final RedisTemplate<String, Object> redisTemplate;
+    public final String loginHandleUrl = "/user/login";
+
 
     /**
      * 用来配置用户签名服务，主要是user-details机制，你还可以给予用户赋予角色
@@ -69,15 +76,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
+        http.sessionManagement().maximumSessions(1); //允许一个人登录
         http.csrf().disable()
                 .sessionManagement()
                 .invalidSessionUrl("/login.html") //session 超时重新登录
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("**/admin/**").hasRole(admin.getAuthority())
-                .antMatchers("**/user/**").hasAnyRole(admin.getAuthority(),user.getAuthority())
+                .antMatchers("/**/admin/**").hasRole(admin.getAuthority())
+                .antMatchers("/**/user/**").hasAnyAuthority(admin.getAuthority(), user.getAuthority())
                 .anyRequest().authenticated() // 所有路劲都需要鉴权
 
                 .and()
@@ -85,11 +92,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .usernameParameter("name") // 表单内账户 key
                 .passwordParameter("password") // 表单内密码 key
                 .loginPage("/login.html") // 登录页面
-                .loginProcessingUrl("/user/login") //  登录处理的url
+                .loginProcessingUrl(loginHandleUrl) //  登录处理的url
                 .successHandler((HttpServletRequest request, HttpServletResponse response, Authentication authentication) -> {
                     log.info("login success"); //登陆成功返回json
                     response.setContentType("application/json;charset=utf-8");
-                    Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
                     response.getWriter().write(json.writeValueAsString(Result.success(request.getSession().getId())));
                 })
                 .failureHandler((request, response, exception) -> {
@@ -103,6 +109,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and().headers().addHeaderWriter(new HeaderWriterCopy());
 
+
+        http.addFilterBefore(new VerificationCodeFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
@@ -112,5 +120,44 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/**/ignore/**", "/captcha");
+    }
+
+
+    //自定义一个验证码校验失败的异常
+    public static class VerificationCodeException extends AuthenticationException {
+
+        public VerificationCodeException(String message) {
+            super(message);
+        }
+    }
+
+    //专门用于校验验证码的过滤器
+    public class VerificationCodeFilter extends OncePerRequestFilter {
+
+        @Override
+        protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
+            try {
+                //登录请求校验验证码
+                if (loginHandleUrl.equals(httpServletRequest.getRequestURI())) {
+                    String requestCode = httpServletRequest.getParameter("captcha");
+                    String o = (String) redisTemplate.opsForValue().get(httpServletRequest.getRequestedSessionId());
+
+                    if (o == null)
+                        throw new VerificationCodeException("验证码过期");
+                    if (!o.equals(requestCode)) {
+                        throw new VerificationCodeException("验证码错误");
+                    }
+                }
+                filterChain.doFilter(httpServletRequest, httpServletResponse);
+            } catch (VerificationCodeException ex) {
+                log.info("login fail");  //登陆失败返回json
+                httpServletResponse.setContentType("application/json;charset=utf-8");
+                httpServletResponse.getWriter().write(json.writeValueAsString(Result.success("验证码错误")));
+            }
+
+        }
     }
 }
+
+

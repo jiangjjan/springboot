@@ -1,5 +1,6 @@
 package demo.mybatis;
 
+import demo.mybatis.entity.Record;
 import demo.mybatis.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,13 @@ public class UserController {
 
     @GetMapping("queryUserByName")
     public Object queryUserByName( ){
-        return userMapper.selectByName("hua",2L);
+
+       Record p = new Record();
+       p.setName("hua");
+       p.setId(2L);
+
+        return userMapper.selectByName(p);
     }
+
+
 }

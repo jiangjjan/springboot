@@ -41,14 +41,23 @@ mybatis:
     map-underscore-to-camel-case: true
     log-impl: security.config.SqlPrint
   mapper-locations: classpath:**/mapper/**/*.xml
-
 server:
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8
+    session:
+      timeout: 30m
+  tomcat:
+    max-connections: 10000
+    threads:
+      max: 10000
+      min-spare: 100
   http2:
     enabled: true
   port: 8080
-  servlet:
-    session:
-      timeout: 1h #一小时内误操作,session就会失效
+  compression:
+    enabled: true
 #logging:
 #  level:
 #    security: debug

@@ -40,11 +40,13 @@ public class ExecOneLockHandler {
 
         RLock lock = redissonClient.getLock(key);
         try {
-
-            if (lock.tryLock(execOnce.waitTime(), execOnce.releaseTime(), execOnce.unit()))
+            log.info("key:{}",key);
+            if (lock.tryLock(execOnce.waitTime(), execOnce.releaseTime(), execOnce.unit())){
                 Thread.sleep(execOnce.delayTime());
-            return proceedingJoinPoint.proceed();
-
+                return proceedingJoinPoint.proceed();
+            }else {
+                return null;
+            }
         } finally {
             lock.forceUnlock();
             log.info("end execOnce {}", proceedingJoinPoint.getSignature());

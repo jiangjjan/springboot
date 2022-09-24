@@ -4,6 +4,7 @@ import demo.mybatis.entity.Record;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
+import java.lang.reflect.Constructor;
 import java.util.*;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -111,4 +112,11 @@ public class Demo {
         log.info("collect :{}", collect);
 
     }
+
+
+    @Test
+    public void reflectTest() throws IllegalAccessException, InstantiationException {
+
+    }
+
 }
