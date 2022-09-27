@@ -4,8 +4,10 @@ spring:
       max-file-size: 275661011
       max-request-size: 275661011
       location: D:/
+
   profiles:
     active: '@spring.profiles.active@'
+    include: item
   application:
     name: "application"
   codec:
@@ -21,9 +23,12 @@ spring:
     hiddenmethod:
       filter:
         enabled: true
+
   jackson:
     time-zone: GMT+8:00
     date-format:
+    visibility:
+      Field:
   datasource:
     hikari:
       connection-timeout: 30000

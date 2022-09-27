@@ -36,7 +36,7 @@ public class CaptchaController {
 		String capText = producer.createText();
 		log.info("capTxt :{}",capText);
 		String txt = capText.substring(0, capText.lastIndexOf("?")+1);
-		String code = capText.substring(capText.lastIndexOf("?"));
+		String code = capText.substring(capText.lastIndexOf("?")+1);
 		redisTemplate.opsForValue().set(request.getRequestedSessionId(), code, Duration.ofMinutes(1));
 		BufferedImage bi = producer.createImage(txt);//获取响应输出流
 		ServletOutputStream out = response.getOutputStream();//将图片验证码数据写到响应输出流

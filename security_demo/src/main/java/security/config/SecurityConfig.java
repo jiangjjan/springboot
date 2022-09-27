@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import security.model.Result;
 
@@ -143,7 +144,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     String requestCode = httpServletRequest.getParameter("captcha");
                     String o = (String) redisTemplate.opsForValue().get(httpServletRequest.getRequestedSessionId());
 
-                    if (o == null)
+                    if (StringUtils.isEmpty(o))
                         throw new VerificationCodeException("验证码过期");
                     if (!o.equals(requestCode)) {
                         throw new VerificationCodeException("验证码错误");

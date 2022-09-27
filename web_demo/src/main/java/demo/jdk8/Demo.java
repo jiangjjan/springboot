@@ -116,7 +116,8 @@ public class Demo {
 
     @Test
     public void reflectTest() throws IllegalAccessException, InstantiationException {
-
+        Integer integer = Integer.valueOf("0010");
+        System.out.println(integer);
     }
 
 }
