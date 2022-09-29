@@ -34,14 +34,24 @@ create table if not exists user
 /**用户角色表**/
 create table if not exists user_role
 (
-    id        bigint unsigned not null auto_increment,
-    role_id   bigint unsigned not null,
-    user_id   bigint unsigned not null,
+    id      bigint unsigned not null auto_increment,
+    role_id bigint unsigned not null,
+    user_id bigint unsigned not null,
     deleted bigint unsigned, -- 0, 其余值都是已删除
     primary key (id),
     unique (role_id, user_id, deleted)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
+
+create table persistent_logins
+(
+    username  varchar(64) not null,
+    series    varchar(64) primary key,
+    token     varchar(64) not null,
+    last_used timestamp   not null
+)ENGINE = InnoDB
+ DEFAULT CHARSET = utf8mb4
+ COLLATE = utf8mb4_0900_ai_ci;
 
 

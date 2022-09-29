@@ -27,3 +27,7 @@ GET http://localhost:8080/admin/test
 
 ###
 GET http://localhost:8080/ignore/test
+
+###
+GET http://10.0.16.210:8044/AliPayWebService.asmx/GetPdfByteReport?Id=L_82323180_1025
+

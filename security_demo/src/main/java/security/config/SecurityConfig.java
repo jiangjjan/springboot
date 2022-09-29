@@ -4,7 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.UrlResource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +16,8 @@ import org.springframework.security.config.annotation.web.configurers.SessionMan
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import security.model.Result;
@@ -23,7 +26,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import java.io.IOException;
 
 import static security.config.RoleDefine.admin;
@@ -38,8 +41,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     final ObjectMapper json;
     final RedisTemplate<String, Object> redisTemplate;
+    final VerificationCodeAuthenticationProvider verificationCodeAuthenticationProvider;
+    final UserDetailsService userDetailsService;
     public final String loginHandleUrl = "/user/login";
 
+
+
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
     /**
      * 用来配置用户签名服务，主要是user-details机制，你还可以给予用户赋予角色
@@ -55,10 +66,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(this.authenticationProvider);
-        super.configure(auth);
+        auth.authenticationProvider(this.verificationCodeAuthenticationProvider);
+        auth.userDetailsService(userDetailsService);
     }
-
+final DataSource dataSource;
 
     /**
      * 用来配置拦截保护的请求，比如什么请求放行，什么请求需要验证
@@ -77,13 +88,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.sessionManagement().maximumSessions(1); //允许一个人登录
         http.csrf().disable()
                 .sessionManagement()
-                .invalidSessionUrl("/login.html") //session 超时重新登录
+                .invalidSessionUrl("/login.html")
+                .maximumSessions(5);//session 超时重新登录
 
-                .and()
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/**/admin/**").hasRole(admin.getAuthority())
                 .antMatchers("/**/user/**").hasAnyAuthority(admin.getAuthority(), user.getAuthority())
                 .anyRequest().authenticated() // 所有路劲都需要鉴权
@@ -110,8 +120,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic()
                 .and().headers().addHeaderWriter(new HeaderWriterCopy());
 
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        jdbcTokenRepository.setDataSource(dataSource);
+        http.rememberMe().alwaysRemember(true).tokenRepository(
+                jdbcTokenRepository
+        );
 
-        http.addFilterBefore(new VerificationCodeFilter(), UsernamePasswordAuthenticationFilter.class);
+
+//        http.addFilterBefore(new VerificationCodeFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
     /**
@@ -121,7 +137,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/**/ignore/**", "/captcha");
+        web.ignoring().antMatchers("/**/ignore/**", "/captcha","/api/**");
     }
 
 

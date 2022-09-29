@@ -13,7 +13,9 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 
+import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ public class PasswordEncoderConfig {
 
 
     String key;
+
 
     // 注入SpringContext后, 会自动使用,也可以在配置里单独配置
     @Bean
@@ -38,5 +41,6 @@ public class PasswordEncoderConfig {
 
         return new DelegatingPasswordEncoder(encodingId, encoders);
     }
+
 
 }
