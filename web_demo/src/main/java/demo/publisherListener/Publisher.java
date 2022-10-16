@@ -9,8 +9,9 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class Publisher implements ApplicationEventPublisherAware {
 
-    private static ApplicationEventPublisher publishEvent;
+    public static ApplicationEventPublisher publishEvent;
 
+    @SuppressWarnings("NullableProblems")
     @Override
     public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
         publishEvent=applicationEventPublisher;

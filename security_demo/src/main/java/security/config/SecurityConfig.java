@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -17,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
-import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import security.model.Result;
@@ -43,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     final RedisTemplate<String, Object> redisTemplate;
     final VerificationCodeAuthenticationProvider verificationCodeAuthenticationProvider;
     final UserDetailsService userDetailsService;
+    final DataSource dataSource;
+
     public final String loginHandleUrl = "/user/login";
 
 
@@ -69,7 +69,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(this.verificationCodeAuthenticationProvider);
         auth.userDetailsService(userDetailsService);
     }
-final DataSource dataSource;
 
     /**
      * 用来配置拦截保护的请求，比如什么请求放行，什么请求需要验证

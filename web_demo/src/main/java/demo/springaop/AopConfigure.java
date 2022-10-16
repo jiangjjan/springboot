@@ -30,6 +30,13 @@ public class AopConfigure {
         return a;
     }
 
+//    @Before("@within(org.springframework.web.bind.annotation.RestController)&args(param)")
+//    @Order(3)
+//    public void orgCode(JoinPoint joinpoint) {
+//        LogConsumerTime a = getAnnotatiom(joinpoint);
+//        log.info("before exec {},value:{}", joinpoint.getSignature().getName(), a.value());
+//    }
+
     @Before("@within(param)||@annotation(param)")
     @Order(3)
     public void logTimePointBefore(JoinPoint joinpoint, LogConsumerTime param) {

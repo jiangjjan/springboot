@@ -19,6 +19,8 @@ public class WebDataBindController {
         return param;
     }
 
+
+
     @RequestMapping("json")
     public Object jsonData(@RequestBody DataBindEntity param) {
         System.out.println(LocalDateTime.now());

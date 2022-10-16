@@ -1,5 +1,8 @@
 ### 异步调用
-GET http://localhost:{{port}}/event/sendMessage
+GET http://localhost:8080/event/sendMessage
 
 ### 同步调用
-GET http://localhost:{{port}}/event/doSyncSendMessage?isError=true
+GET http://localhost:8080/event/doSyncSendMessage?isError=true
+
+###
+GET http://localhost:8080/event/list

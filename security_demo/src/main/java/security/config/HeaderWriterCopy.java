@@ -6,18 +6,23 @@ import org.springframework.util.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public class HeaderWriterCopy implements HeaderWriter {
 
 
-	String headerParam="X-Param";
+	List<String>  headerParam=List.of("X-Param");
 
 	@Override
 	public void writeHeaders(HttpServletRequest request, HttpServletResponse response) {
 		response.setHeader(HttpHeaders.CONNECTION, "close");
-		String header = request.getHeader(headerParam);
-		if (!StringUtils.isEmpty(header))
-			response.setHeader(headerParam, header);
+
+		headerParam.forEach(headName->{
+			String header = request.getHeader(headName);
+			if (!StringUtils.isEmpty(header))
+				response.setHeader(headName, header);
+		});
+
 	}
 
 }

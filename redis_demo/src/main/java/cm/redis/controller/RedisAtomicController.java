@@ -1,6 +1,7 @@
 package cm.redis.controller;
 
 
+import cm.redis.service.MultiCacheTestService;
 import lombok.RequiredArgsConstructor;
 import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
@@ -24,6 +25,7 @@ public class RedisAtomicController {
     final RedisTemplate<String, Object> redis;
 
     final RedissonClient redissonClient;
+    final MultiCacheTestService multiCacheTestService;
 
     @GetMapping("inr")
     public Object autoInr() {
@@ -42,6 +44,10 @@ public class RedisAtomicController {
         }
         return ops.get();
 
+    }
+    @GetMapping("list")
+    public Object get(){
+        return multiCacheTestService.listTest();
     }
 
 

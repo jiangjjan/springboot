@@ -1,8 +1,6 @@
 package demo.publisherListener;
 
-import demo.publisherListener.entity.SendImp;
-import demo.publisherListener.entity.SendMessage;
-import demo.publisherListener.entity.SynchronousEvent;
+import demo.publisherListener.entity.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -40,4 +39,13 @@ public class ListenerController {
         return 1;
     }
 
+    @GetMapping("list")
+    public Object list() {
+        SendMessage e = new SendMessage("this is asyncSendMessage message");
+        List<SendMessageFlag> list = List.of(e);
+        ListWrapperEvent ss = new ListWrapperEvent();
+        ss.setData(list);
+        Publisher.getPublishEvent().publishEvent(ss);
+        return 1;
+    }
 }

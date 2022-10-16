@@ -6,7 +6,7 @@ spring:
       location: D:/
 
   profiles:
-    active: '@spring.profiles.active@'
+    active: dev
     include: item
   application:
     name: "application"
@@ -26,9 +26,6 @@ spring:
 
   jackson:
     time-zone: GMT+8:00
-    date-format:
-    visibility:
-      Field:
   datasource:
     hikari:
       connection-timeout: 30000
