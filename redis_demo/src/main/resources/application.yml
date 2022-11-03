@@ -30,3 +30,5 @@ mybatis:
 
 server:
   port: 8080
+lis:
+  startModel: 11,23

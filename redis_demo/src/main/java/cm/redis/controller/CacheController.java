@@ -36,8 +36,8 @@ public class CacheController {
     }
 
     @GetMapping("local")
-    public Object local() {
-        return localCacheTestService.testNull("aa",null);
+    public Object local(String key1) {
+        return localCacheTestService.testNull(key1,null);
     }
 
     @PostMapping("add")

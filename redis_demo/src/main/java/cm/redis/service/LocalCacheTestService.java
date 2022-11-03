@@ -24,8 +24,11 @@ public class LocalCacheTestService {
         return testMapper.listTest();
     }
 
-    @Cacheable(key = "'allList'+#key1+#key2")
+    @Cacheable(key = "'allList'+#key1+#key2",unless = "#result==null")
     public String testNull(String key1,String key2) {
+        log.error("exec list");
+        if("1".equals(key1))
+            return null;
        return key1+key2;
     }
 }

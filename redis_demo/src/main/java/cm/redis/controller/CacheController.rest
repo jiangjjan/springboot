@@ -5,7 +5,7 @@ GET http://localhost:8080/cache/query/test/2
 GET http://localhost:8080/cache/list
 
 ###
-GET http://localhost:8080/cache/local
+GET http://localhost:8080/cache/local?key1=2
 
 ###
 POST http://localhost:8080/cache/add
