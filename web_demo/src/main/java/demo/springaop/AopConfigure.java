@@ -72,6 +72,7 @@ public class AopConfigure {
     }
 
     ExpressionEvaluator expressionEvaluator = new ExpressionEvaluator();
+
     @Order(1)
     @Before("@annotation(param)")
     public void param(JoinPoint joinpoint, Param param) {
