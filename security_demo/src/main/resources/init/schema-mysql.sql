@@ -1,6 +1,7 @@
 create schema if not exists security_test default CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 use security_test;
 
+use security_test;
 /**角色表**/
 create table if not exists role
 (

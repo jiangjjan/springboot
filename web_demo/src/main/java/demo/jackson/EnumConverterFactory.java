@@ -9,7 +9,6 @@ public class EnumConverterFactory  implements ConverterFactory<String, Converter
 
     @Override
     public <T extends ConverterBaseEnum> Converter<String, T> getConverter(Class<T> targetType) {
-        System.err.println("add EnumConverterFactory");
         return source ->  {
             for (T e: targetType.getEnumConstants()) {
                 if (e.getCovertValue().equals(source)) {
