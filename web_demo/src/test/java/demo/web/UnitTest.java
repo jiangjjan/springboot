@@ -1,42 +1,83 @@
 package demo.web;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.event.*;
-import com.kingdee.bos.webapi.sdk.K3CloudApi;
+import okhttp3.ConnectionPool;
+import okhttp3.OkHttpClient;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
+import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.common.RemotingHelper;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.OkHttp3ClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.Duration;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.IntStream;
 
 public class UnitTest {
 
+	RestTemplate restTemplate = new RestTemplate();
+
+	{
+		restTemplate.setRequestFactory(new OkHttp3ClientHttpRequestFactory(client()));
+		int index = 0;
+
+		for (int i = 0; i < restTemplate.getMessageConverters().size(); i++) {
+			if (restTemplate.getMessageConverters().get(i) instanceof MappingJackson2HttpMessageConverter)
+				index = i;
+		}
+		restTemplate.getMessageConverters().add(index,converter());
+	}
 	@Test
-	public void ss() throws IOException {
+	public void ss() {
 
 
-		List<String> strings = Files.readAllLines(Paths.get("D:/203d4e97-7068-4a8b-9958-c1cb58015f8e.json"));
-
-		Set<String> ss = Collections.synchronizedSet(new HashSet<>());
-
-		strings.parallelStream().forEach(e -> {
-
-			ss.add(e.substring(e.indexOf("itemCode") + 9, e.lastIndexOf("\"")));
-
-
+		IntStream.rangeClosed(1,255).parallel().forEach(e->{
+			restTemplate.getForEntity("http://localhost:9301/biochemicalMaterial/decrTestNum?orgCode=1023&labGroupCode=0002&deviceNo=AU5811&itemCode=LP(A)",String.class);
 		});
-		System.out.println(ss);
 
 	}
 
-	public static void main(String[] args) {
+	OkHttpClient client() {
+		return new OkHttpClient().newBuilder()
+				.connectionPool(new ConnectionPool(500, 300, TimeUnit.SECONDS))
+				.connectTimeout(Duration.ofSeconds(5))
+				.readTimeout(Duration.ofSeconds(20))
+				.build();
+	}
+
+	MappingJackson2HttpMessageConverter converter() {
+		JsonMapper json = new JsonMapper();
+		json.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+		json.disable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+		MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter(json);
+		converter.setSupportedMediaTypes(Arrays.asList(MediaType.TEXT_PLAIN, MediaType.APPLICATION_JSON));
+		return converter;
+	}
+	@Test
+	public  void main() {
 		BinaryLogClient client = new BinaryLogClient("127.0.0.1", 3307, "root", "123456");
 		client.setServerId(3);
 
@@ -80,10 +121,68 @@ public class UnitTest {
 	@Test
 	public void k3Client() throws Exception {
 
-		K3CloudApi api = new K3CloudApi();
-		String body = "{\"FormId\":\"SP_PickMtrl\",\"OrderString\":\"FAPPROVEDATE desc\",\"TopRowCount\":0,\"StartRow\":0,\"Limit\":0,\"SubSystemId\":\"\",\"FilterString\":\"FMaterialID.FNumber = '11.004412' and FStockOrgId.FNumber = 1023 and FDate = '2022-11-07'\",\"FieldKeys\":\"FMaterialID.F_Manufacturer,FLot,FMaterialName,FExpiryDate,FAPPROVEDATE,FSpecification,FDate,FActualQty\"}";
-		List<List<Object>> ss = api.executeBillQuery(body);
-		System.out.println(ss);
+//		K3CloudApi api = new K3CloudApi();
+//		String body = "{\"FormId\":\"SP_PickMtrl\",\"OrderString\":\"FAPPROVEDATE desc\",\"TopRowCount\":0,\"StartRow\":0,\"Limit\":0,\"SubSystemId\":\"\",\"FilterString\":\"FMaterialID.FNumber = '11.004412' and FStockOrgId.FNumber = 1023 and FDate = '2022-11-07'\",\"FieldKeys\":\"FMaterialID.F_Manufacturer,FLot,FMaterialName,FExpiryDate,FAPPROVEDATE,FSpecification,FDate,FActualQty\"}";
+//		List<List<Object>> ss = api.executeBillQuery(body);
+//		System.out.println(ss);
+
+	}
+
+
+	@Test
+	public void number() {
+		Double s = 7D/2L;
+
+		System.out.println(NumberUtils.isDigits(String.valueOf(4/2)));
+	}
+
+	static String topic = "test-topic-name-x";
+	static String server = "10.0.11.225:9876";
+
+	@Test
+	public void producer() throws UnsupportedEncodingException, InterruptedException, RemotingException, MQClientException, MQBrokerException {
+
+		// 初始化一个producer并设置Producer group name
+		DefaultMQProducer producer = new DefaultMQProducer(topic); //（1）
+		// 设置NameServer地址
+		producer.setNamesrvAddr(server);  //（2）
+		// 启动producer
+		producer.start();
+		for (int i = 999; i < 999+20; i++) {
+			// 创建一条消息，并指定topic、tag、body等信息，tag可以理解成标签，对消息进行再归类，RocketMQ可以在消费端对tag进行过滤
+			Message msg = new Message(topic /* Topic */,
+					"TagA" /* Tag */,
+					("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+			);   //（3）
+			// 利用producer进行发送，并同步等待发送结果
+			SendResult sendResult = producer.send(msg);   //（4）
+			System.out.printf("%s%n", sendResult);
+		}
+		// 一旦producer不再使用，关闭producer
+		producer.shutdown();
+
+	}
+
+	public static void main(String[] args) throws MQClientException {
+		// 初始化consumer，并设置consumer group name
+		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer-name-x");
+
+		// 设置NameServer地址
+		consumer.setNamesrvAddr(server);
+		//订阅一个或多个topic，并指定tag过滤条件，这里指定*表示接收所有tag的消息
+		consumer.subscribe(topic, "*");
+		//注册回调接口来处理从Broker中收到的消息
+		consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
+
+
+			System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
+			// 返回消息消费状态，ConsumeConcurrentlyStatus.CONSUME_SUCCESS为消费成功
+			return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+
+
+		});
+		// 启动Consumer
+		consumer.start();
 
 	}
 
