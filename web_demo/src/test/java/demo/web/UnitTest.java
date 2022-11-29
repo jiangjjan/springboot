@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.github.shyiko.mysql.binlog.BinaryLogClient;
 import com.github.shyiko.mysql.binlog.event.*;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -26,16 +27,16 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.Duration;
-import java.util.*;
+import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
 
+@Slf4j
 public class UnitTest {
 
 	RestTemplate restTemplate = new RestTemplate();
@@ -136,23 +137,23 @@ public class UnitTest {
 		System.out.println(NumberUtils.isDigits(String.valueOf(4/2)));
 	}
 
-	static String topic = "test-topic-name-x";
+	static String topic = "dev";
 	static String server = "10.0.11.225:9876";
 
 	@Test
 	public void producer() throws UnsupportedEncodingException, InterruptedException, RemotingException, MQClientException, MQBrokerException {
 
 		// 初始化一个producer并设置Producer group name
-		DefaultMQProducer producer = new DefaultMQProducer(topic); //（1）
+		DefaultMQProducer producer = new DefaultMQProducer("producer-group-default"); //（1）
 		// 设置NameServer地址
 		producer.setNamesrvAddr(server);  //（2）
 		// 启动producer
 		producer.start();
-		for (int i = 999; i < 999+20; i++) {
+		for (int i = 999; i < 999+1; i++) {
 			// 创建一条消息，并指定topic、tag、body等信息，tag可以理解成标签，对消息进行再归类，RocketMQ可以在消费端对tag进行过滤
 			Message msg = new Message(topic /* Topic */,
-					"TagA" /* Tag */,
-					("Hello RocketMQ " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
+					"Tag_clinical_sync_data_dev" /* Tag */,
+					("Hello RocketMQ Clinical " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
 			);   //（3）
 			// 利用producer进行发送，并同步等待发送结果
 			SendResult sendResult = producer.send(msg);   //（4）
@@ -165,7 +166,7 @@ public class UnitTest {
 
 	public static void main(String[] args) throws MQClientException {
 		// 初始化consumer，并设置consumer group name
-		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("consumer-name-x");
+		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("GID_clinical_sync_data_dev");
 
 		// 设置NameServer地址
 		consumer.setNamesrvAddr(server);
@@ -174,8 +175,7 @@ public class UnitTest {
 		//注册回调接口来处理从Broker中收到的消息
 		consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
 
-
-			System.out.printf("%s Receive New Messages: %s %n", Thread.currentThread().getName(), msgs);
+			log.info("{} Receive New Messages: {} ",Thread.currentThread().getName(), new String(msgs.get(0).getBody(), StandardCharsets.UTF_8));
 			// 返回消息消费状态，ConsumeConcurrentlyStatus.CONSUME_SUCCESS为消费成功
 			return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
 

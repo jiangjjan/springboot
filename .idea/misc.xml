@@ -4,11 +4,11 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/active_mq/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/active_mq/pom.xml" />
         <option value="$PROJECT_DIR$/lucene/pom.xml" />
         <option value="$PROJECT_DIR$/rabbit_mq/pom.xml" />
       </set>
