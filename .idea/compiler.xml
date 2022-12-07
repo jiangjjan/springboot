@@ -8,20 +8,21 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="batch" />
-        <module name="sharding" />
+        <module name="multidb_demo" />
         <module name="websocket_demo" />
         <module name="web" />
         <module name="security" />
         <module name="redis-demo" />
         <module name="active_mq" />
-        <module name="multidb_demo" />
         <module name="tomcathhttps" />
+        <module name="sharding" />
+        <module name="lucene" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="active_mq" target="11" />
       <module name="batch" target="11" />
-      <module name="lucene" target="9" />
+      <module name="lucene" target="11" />
       <module name="multidb_demo" target="11" />
       <module name="rabbit_mq" target="1.8" />
       <module name="redis-demo" target="11" />

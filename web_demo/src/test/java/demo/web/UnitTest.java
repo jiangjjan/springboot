@@ -1,5 +1,6 @@
 package demo.web;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -137,8 +138,9 @@ public class UnitTest {
 		System.out.println(NumberUtils.isDigits(String.valueOf(4/2)));
 	}
 
-	static String topic = "dev";
+	static String topic = "data_sync_topic";
 	static String server = "10.0.11.225:9876";
+	static String tag = "data_sync_test";
 
 	@Test
 	public void producer() throws UnsupportedEncodingException, InterruptedException, RemotingException, MQClientException, MQBrokerException {
@@ -152,7 +154,7 @@ public class UnitTest {
 		for (int i = 999; i < 999+1; i++) {
 			// 创建一条消息，并指定topic、tag、body等信息，tag可以理解成标签，对消息进行再归类，RocketMQ可以在消费端对tag进行过滤
 			Message msg = new Message(topic /* Topic */,
-					"Tag_clinical_sync_data_dev" /* Tag */,
+					tag /* Tag */,
 					("Hello RocketMQ Clinical " + i).getBytes(RemotingHelper.DEFAULT_CHARSET) /* Message body */
 			);   //（3）
 			// 利用producer进行发送，并同步等待发送结果
@@ -166,7 +168,7 @@ public class UnitTest {
 
 	public static void main(String[] args) throws MQClientException {
 		// 初始化consumer，并设置consumer group name
-		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("GID_clinical_sync_data_dev");
+		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("data_sync_consumer_group");
 
 		// 设置NameServer地址
 		consumer.setNamesrvAddr(server);
@@ -175,8 +177,9 @@ public class UnitTest {
 		//注册回调接口来处理从Broker中收到的消息
 		consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
 
-			log.info("{} Receive New Messages: {} ",Thread.currentThread().getName(), new String(msgs.get(0).getBody(), StandardCharsets.UTF_8));
+			FlatMessage flatMessage = JSON.parseObject(new String(msgs.get(0).getBody(), StandardCharsets.UTF_8), FlatMessage.class);
 			// 返回消息消费状态，ConsumeConcurrentlyStatus.CONSUME_SUCCESS为消费成功
+			log.info("Thread {} Message {}",Thread.currentThread().getId(),flatMessage.toString());
 			return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
 
 

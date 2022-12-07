@@ -1,0 +1,22 @@
+{
+  "groups": [
+    {
+      "name": "iteminfoconfig",
+      "type": "demo.valueAnnotation.ItemWrapper",
+      "sourceType": "demo.valueAnnotation.ItemWrapper"
+    }
+  ],
+  "properties": [
+    {
+      "name": "iteminfoconfig.item-map",
+      "type": "java.util.Map<java.lang.String,java.util.Map<java.lang.String,java.lang.String>>",
+      "sourceType": "demo.valueAnnotation.ItemWrapper"
+    },
+    {
+      "name": "iteminfoconfig.items",
+      "type": "java.util.Map<java.lang.String,java.util.Map<java.lang.String,java.lang.String>>",
+      "sourceType": "demo.valueAnnotation.ItemWrapper"
+    }
+  ],
+  "hints": []
+}
