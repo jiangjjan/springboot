@@ -5,10 +5,16 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.springframework.beans.BeansException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.expression.AnnotatedElementKey;
 import org.springframework.core.annotation.Order;
 import org.springframework.expression.EvaluationContext;
+import org.springframework.expression.ExpressionParser;
+import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.util.StopWatch;
 
 import java.lang.reflect.Method;
@@ -17,7 +23,14 @@ import java.lang.reflect.Method;
 @Aspect
 @Configuration
 @Slf4j
-public class AopConfigure {
+public class AopConfigure implements ApplicationContextAware {
+
+    StandardEvaluationContext context = new StandardEvaluationContext();
+    ExpressionParser parser = new SpelExpressionParser();
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        context.setBeanResolver((context, beanName) -> applicationContext.getBean(beanName));
+    }
 
     private LogConsumerTime getAnnotatiom(JoinPoint joinpoint, LogConsumerTime param) {
         LogConsumerTime a;
