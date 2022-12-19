@@ -44,7 +44,7 @@
       <module name="redis-demo" options="-parameters" />
       <module name="security" options="-parameters" />
       <module name="sharding" options="-parameters" />
-      <module name="springboot" options="-parameters" />
+      <module name="springboot" options="" />
       <module name="tomcathhttps" options="-parameters" />
       <module name="web" options="-parameters" />
       <module name="websocket_demo" options="-parameters" />

@@ -151,7 +151,7 @@ public class UnitTest {
 		producer.setNamesrvAddr(server);  //（2）
 		// 启动producer
 		producer.start();
-		for (int i = 999; i < 999+1; i++) {
+		for (int i = 0; i < 999+1; i++) {
 			// 创建一条消息，并指定topic、tag、body等信息，tag可以理解成标签，对消息进行再归类，RocketMQ可以在消费端对tag进行过滤
 			Message msg = new Message(topic /* Topic */,
 					tag /* Tag */,
@@ -168,7 +168,7 @@ public class UnitTest {
 
 	public static void main(String[] args) throws MQClientException {
 		// 初始化consumer，并设置consumer group name
-		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("data_sync_consumer_group");
+		DefaultMQPushConsumer consumer = new DefaultMQPushConsumer("data_sync_consumer_groups");
 
 		// 设置NameServer地址
 		consumer.setNamesrvAddr(server);
@@ -179,7 +179,7 @@ public class UnitTest {
 
 			FlatMessage flatMessage = JSON.parseObject(new String(msgs.get(0).getBody(), StandardCharsets.UTF_8), FlatMessage.class);
 			// 返回消息消费状态，ConsumeConcurrentlyStatus.CONSUME_SUCCESS为消费成功
-			log.info("Thread {} Message {}",Thread.currentThread().getId(),flatMessage.toString());
+			log.info("Thread {} Message {}",Thread.currentThread().getId(),flatMessage);
 			return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
 
 
