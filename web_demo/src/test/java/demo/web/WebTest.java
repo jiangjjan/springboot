@@ -1,6 +1,7 @@
 package demo.web;
 
 import com.alibaba.fastjson.JSON;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -21,10 +22,10 @@ import static demo.web.UnitTest.topic;
 @RunWith(SpringRunner.class)
 @Slf4j
 @SpringBootTest
+@RequiredArgsConstructor
 public class WebTest {
 
-    @Autowired
-    TestRestTemplate request;
+    final TestRestTemplate request;
 
     @Test
     public void interceptor() {
@@ -44,7 +45,7 @@ public class WebTest {
         consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
             FlatMessage flatMessage = JSON.parseObject(new String(msgs.get(0).getBody(), StandardCharsets.UTF_8), FlatMessage.class);
             // 返回消息消费状态，ConsumeConcurrentlyStatus.CONSUME_SUCCESS为消费成功
-            log.info("Thread {} Message {}",Thread.currentThread().getId(),flatMessage);
+            log.info("Thread {} Message {}", Thread.currentThread().getId(), flatMessage);
             return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
 
 
