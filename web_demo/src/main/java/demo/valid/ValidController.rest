@@ -1,0 +1,20 @@
+###
+POST http://localhost:8081/test
+Content-Type: application/json
+
+[
+  {
+    "id": 1,
+    "name": "adsdsa",
+    "address": ["a","b"]
+  }
+]
+
+###
+POST http://localhost:8081/user
+Content-Type: application/json
+
+{
+  "id": 1,
+  "name": "adsdsa"
+}

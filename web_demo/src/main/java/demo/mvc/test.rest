@@ -14,14 +14,5 @@ Content-Type: application/json
 }
 
 
-###
-POST http://localhost:8081/test
-Content-Type: application/json
-
-[
-  {
-    "id": 1
-  }
-]
 
 
