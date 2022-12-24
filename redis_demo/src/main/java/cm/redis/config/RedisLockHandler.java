@@ -18,7 +18,7 @@ import java.util.Objects;
 @Configuration
 @Slf4j
 @RequiredArgsConstructor
-public class ExecOneLockHandler {
+public class RedisLockHandler {
 
 
     final RedissonClient redissonClient;
