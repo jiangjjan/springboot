@@ -23,26 +23,26 @@ public class ExecOneLockHandler {
 
     final RedissonClient redissonClient;
 
-    @Around("@annotation(execOnce)||@within(execOnce)")
-    public Object execOnce(ProceedingJoinPoint proceedingJoinPoint, ExecOnce execOnce) throws Throwable {
+    @Around("@annotation(redisLock)||@within(redisLock)")
+    public Object execOnce(ProceedingJoinPoint proceedingJoinPoint, RedisLock redisLock) throws Throwable {
 
         log.info("exec execOnce {}", proceedingJoinPoint.getSignature());
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
-        ExecOnce annotation = signature.getMethod().getAnnotation(ExecOnce.class);
+        RedisLock annotation = signature.getMethod().getAnnotation(RedisLock.class);
         if (Objects.nonNull(annotation)) {
-            execOnce = annotation;
+            redisLock = annotation;
         }
 
-        log.debug("annotation:{}",execOnce);
-        String key = execOnce.value();
-        if (ExecOnce.Consist.defaultKey.equals(key))
+        log.debug("annotation:{}", redisLock);
+        String key = redisLock.value();
+        if (RedisLock.Consist.defaultKey.equals(key))
             key = proceedingJoinPoint.getSignature().toLongString();
 
         RLock lock = redissonClient.getLock(key);
         try {
             log.info("key:{}",key);
-            if (lock.tryLock(execOnce.waitTime(), execOnce.releaseTime(), execOnce.unit())){
-                Thread.sleep(execOnce.delayTime());
+            if (lock.tryLock(redisLock.waitTime(), redisLock.releaseTime(), redisLock.unit())){
+                Thread.sleep(redisLock.delayTime());
                 return proceedingJoinPoint.proceed();
             }else {
                 return null;
